@@ -13,13 +13,13 @@ import java.util.Scanner;
 @NoArgsConstructor
 public class MenuServiceQuestionConsole implements MenuService {
 
-    private static final String MESSAGE_HELLO = "Добрый день, студент!\nНачинаем процесс тестирования";
-    private static final String MESSAGE_PRINT_QUESTION = "Вопрос номер: %d\n%s\n";
+    private static final String MESSAGE_HELLO = "Hi, student!\nWe start testing";
+    private static final String MESSAGE_PRINT_QUESTION = "Question: %d\n%s\n";
     private static final String MESSAGE_OPTION = "%d - %s\n";
     private static final String MESSAGE_FIELD_TYPING = "> ";
-    private static final String MESSAGE_CONGRATULATIONS = "Поздравляю, вы сдали.";
-    private static final String MESSAGE_TEST_FAIL = "Вы не сдали тест! Пересдача.";
-    private static final String MESSAGE_INPUT_ERROR = "Ошибка ввода. Вы ввели недопустимое значение. Это продолжится, пока не введете допустимое";
+    private static final String MESSAGE_CONGRATULATIONS = "Congratulations.";
+    private static final String MESSAGE_TEST_FAIL = "Test not passed.";
+    private static final String MESSAGE_INPUT_ERROR = "Input error. You entered an invalid value. This will continue until you enter a valid";
 
     private QuestionDao questionDao;
     private long minCorrectAnswer;
