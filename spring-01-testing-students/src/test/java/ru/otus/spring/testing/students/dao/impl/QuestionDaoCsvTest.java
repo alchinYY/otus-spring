@@ -42,7 +42,7 @@ class QuestionDaoCsvTest {
     @Test
     void getById() {
         Question question = new Question(
-                1, "Где мы обучаемся?", QuestionType.TEXT, "otus", Collections.emptyList(), null
+                1, "Where do we study?", QuestionType.TEXT, "otus", Collections.emptyList(), null
         );
         assertEquals(question, questionDaoCsv.getById(0));
 
