@@ -8,9 +8,14 @@
     <context:property-placeholder
             location="classpath:/application.properties"/>
 
-    <bean id="questionDaoCsv" class="ru.otus.spring.testing.students.dao.impl.QuestionDaoCsv"
-          init-method="readDataFile">
+
+    <bean id="questionStrategyConfig" class="ru.otus.spring.testing.students.config.MappingStrategyConfig">
+        <constructor-arg name="aClass" value="ru.otus.spring.testing.students.domain.Question"/>
+    </bean>
+
+    <bean id="questionDaoCsv" class="ru.otus.spring.testing.students.dao.impl.QuestionDaoCsv">
         <constructor-arg name="csvFileWithData" value="${csv.file.name}"/>
+        <constructor-arg name="mappingStrategy" ref="questionStrategyConfig"/>
     </bean>
 
     <bean id="menuService" class="ru.otus.spring.testing.students.service.impl.MenuServiceQuestionConsole"
