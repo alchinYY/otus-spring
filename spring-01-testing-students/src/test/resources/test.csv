@@ -1,0 +1,6 @@
+id,test_question,type,answer,options,available_input
+1,Where do we study?,TEXT,otus,,
+2,Spring is - ,TEST,2,"season;framework;IoC & DI;package in java","[1-4]"
+3,What is unit testing?,TEST,2,"system testing;testing a separate module;testing ui","[1-3]"
+4,Expanding a file with context in spring,TEXT,xml,,
+5,How do you like the test?,TEST,1,"yes;no","1"
