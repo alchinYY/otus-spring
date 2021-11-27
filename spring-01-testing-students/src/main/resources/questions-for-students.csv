@@ -1,4 +1,5 @@
 id,test_question,type,answer,options,available_input
+0,What's your name and last name?,COMMON,,,
 1,Where do we study?,TEXT,otus,,
 2,Spring is - ,TEST,2,"season;framework;IoC & DI;package in java","[1-4]"
 3,What is unit testing?,TEST,2,"system testing;testing a separate module;testing ui","[1-3]"

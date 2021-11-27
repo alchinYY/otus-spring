@@ -1,28 +1,34 @@
 package ru.otus.spring.testing.students.service.impl;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import ru.otus.spring.testing.students.dao.QuestionDao;
 import ru.otus.spring.testing.students.domain.Question;
+import ru.otus.spring.testing.students.domain.QuestionType;
 import ru.otus.spring.testing.students.service.MenuService;
 
+import javax.annotation.PreDestroy;
 import java.util.Objects;
 import java.util.Scanner;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@Service
 public class MenuServiceQuestionConsole implements MenuService {
 
     private static final String MESSAGE_HELLO = "Hi, student!\nWe start testing";
-    private static final String MESSAGE_PRINT_QUESTION = "Question: %d\n%s\n";
+    private static final String MESSAGE_PRINT_QUESTION = "Question: %s. Type: %s\n%s\n";
     private static final String MESSAGE_OPTION = "%d - %s\n";
     private static final String MESSAGE_FIELD_TYPING = "> ";
-    private static final String MESSAGE_CONGRATULATIONS = "Congratulations.";
+    private static final String MESSAGE_CONGRATULATIONS = "Congratulations!";
     private static final String MESSAGE_TEST_FAIL = "Test not passed.";
     private static final String MESSAGE_INPUT_ERROR = "Input error. You entered an invalid value. This will continue until you enter a valid";
 
-    private QuestionDao questionDao;
-    private long minCorrectAnswer;
+    private final QuestionDao questionDao;
+    private final long minCorrectAnswer;
+
+    public MenuServiceQuestionConsole(@Value("${min.correct.answer}") long minCorrectAnswer, QuestionDao questionDao){
+        this.minCorrectAnswer = minCorrectAnswer;
+        this.questionDao = questionDao;
+    }
 
     private final Scanner scanner = new Scanner(System.in);
 
@@ -33,6 +39,7 @@ public class MenuServiceQuestionConsole implements MenuService {
                 .filter(question -> {
                     System.out.printf(MESSAGE_PRINT_QUESTION,
                             question.getId(),
+                            question.getType(),
                             question.getTestQuestion()
                     );
                     printOptions(question);
@@ -49,10 +56,14 @@ public class MenuServiceQuestionConsole implements MenuService {
         while (true) {
             System.out.print(MESSAGE_FIELD_TYPING);
             String input = scanner.nextLine();
-            if (Objects.isNull(question.getAvailableInput()) || input.matches(question.getAvailableInput())) {
-                return input.equalsIgnoreCase(question.getAnswer());
+            if(question.getType().equals(QuestionType.COMMON)){
+                return false;
             } else {
-                System.out.println(MESSAGE_INPUT_ERROR);
+                if (Objects.isNull(question.getAvailableInput()) || input.matches(question.getAvailableInput())) {
+                    return input.equalsIgnoreCase(question.getAnswer());
+                } else {
+                    System.out.println(MESSAGE_INPUT_ERROR);
+                }
             }
         }
     }
@@ -65,6 +76,7 @@ public class MenuServiceQuestionConsole implements MenuService {
         }
     }
 
+    @PreDestroy
     private void destroy() {
         scanner.close();
     }
