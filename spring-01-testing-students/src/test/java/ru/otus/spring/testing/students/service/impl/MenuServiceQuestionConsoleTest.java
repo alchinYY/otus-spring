@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import ru.otus.spring.testing.students.dao.QuestionDao;
@@ -20,11 +22,12 @@ class MenuServiceQuestionConsoleTest {
     @Mock
     private QuestionDao questionDao;
 
+    @InjectMocks
     private MenuServiceQuestionConsole menuServiceQuestionConsole;
 
     @BeforeEach
     public void setup() {
-        menuServiceQuestionConsole = new MenuServiceQuestionConsole(questionDao);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
