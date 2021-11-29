@@ -1,5 +1,6 @@
 package ru.otus.spring.testing.students.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.testing.students.dao.QuestionDao;
@@ -7,11 +8,11 @@ import ru.otus.spring.testing.students.domain.Question;
 import ru.otus.spring.testing.students.domain.QuestionType;
 import ru.otus.spring.testing.students.service.MenuService;
 
-import javax.annotation.PreDestroy;
 import java.util.Objects;
 import java.util.Scanner;
 
 @Service
+@RequiredArgsConstructor
 public class MenuServiceQuestionConsole implements MenuService {
 
     private static final String MESSAGE_HELLO = "Hi, student!\nWe start testing";
@@ -23,12 +24,9 @@ public class MenuServiceQuestionConsole implements MenuService {
     private static final String MESSAGE_INPUT_ERROR = "Input error. You entered an invalid value. This will continue until you enter a valid";
 
     private final QuestionDao questionDao;
-    private final long minCorrectAnswer;
 
-    public MenuServiceQuestionConsole(@Value("${min.correct.answer}") long minCorrectAnswer, QuestionDao questionDao){
-        this.minCorrectAnswer = minCorrectAnswer;
-        this.questionDao = questionDao;
-    }
+    @Value("${min.correct.answer}")
+    private long minCorrectAnswer;
 
     private final Scanner scanner = new Scanner(System.in);
 
@@ -75,12 +73,6 @@ public class MenuServiceQuestionConsole implements MenuService {
             }
         }
     }
-
-    @PreDestroy
-    private void destroy() {
-        scanner.close();
-    }
-
 
     boolean checkCorrectAnswers(long correctAnswerCounter) {
         return correctAnswerCounter < minCorrectAnswer;

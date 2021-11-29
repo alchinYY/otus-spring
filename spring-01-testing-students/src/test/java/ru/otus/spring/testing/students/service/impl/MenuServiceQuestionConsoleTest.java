@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import ru.otus.spring.testing.students.dao.QuestionDao;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -23,12 +24,13 @@ class MenuServiceQuestionConsoleTest {
 
     @BeforeEach
     public void setup() {
-        menuServiceQuestionConsole = new MenuServiceQuestionConsole(TEST_VALUE_MIN_CORRECT_ANSWER, questionDao);
+        menuServiceQuestionConsole = new MenuServiceQuestionConsole(questionDao);
     }
 
     @Test
     @DisplayName("Тестирование проверки количества корректных ответов")
     void checkCorrectAnswers() {
+        ReflectionTestUtils.setField(menuServiceQuestionConsole, "minCorrectAnswer", TEST_VALUE_MIN_CORRECT_ANSWER);
         assertThat(menuServiceQuestionConsole.checkCorrectAnswers(5)).isFalse();
         assertThat(menuServiceQuestionConsole.checkCorrectAnswers(2)).isTrue();
     }
