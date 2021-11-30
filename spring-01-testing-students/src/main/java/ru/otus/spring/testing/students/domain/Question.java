@@ -22,7 +22,7 @@ public class Question {
     @CsvBindByName(required = true)
     private QuestionType type;
 
-    @CsvBindByName(required = true)
+    @CsvBindByName
     private String answer;
 
     @CsvBindAndSplitByName(elementType = String.class, splitOn = ";")

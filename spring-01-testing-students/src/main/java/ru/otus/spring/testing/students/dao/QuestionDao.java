@@ -8,6 +8,6 @@ public interface QuestionDao {
 
     List<Question> findAll();
 
-    Question getById(int id);
+    Question findById(int id);
 
 }
