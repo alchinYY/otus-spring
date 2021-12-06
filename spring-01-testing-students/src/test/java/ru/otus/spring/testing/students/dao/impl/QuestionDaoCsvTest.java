@@ -1,14 +1,12 @@
 package ru.otus.spring.testing.students.dao.impl;
 
 import org.assertj.core.util.Lists;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.spring.testing.students.domain.Question;
 import ru.otus.spring.testing.students.domain.QuestionType;
 import ru.otus.spring.testing.students.util.csv.CsvReader;
@@ -20,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @DisplayName("DAO. Read data from hard-csv file")
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 class QuestionDaoCsvTest {
 
     @Mock
@@ -28,12 +26,7 @@ class QuestionDaoCsvTest {
 
     @InjectMocks
     private QuestionDaoCsv questionDaoCsv;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
-
+    
     @Test
     @DisplayName("find all test")
     void findAll() {
@@ -53,7 +46,7 @@ class QuestionDaoCsvTest {
                 "Where do we study?",
                 QuestionType.TEXT,
                 "otus",
-                Collections.emptyList(),
+                null,
                 null
         );
 

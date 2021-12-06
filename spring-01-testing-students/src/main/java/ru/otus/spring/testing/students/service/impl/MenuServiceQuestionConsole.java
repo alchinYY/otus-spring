@@ -2,80 +2,104 @@ package ru.otus.spring.testing.students.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import ru.otus.spring.testing.students.dao.QuestionDao;
+import ru.otus.spring.testing.students.config.LocalizationConfig;
+import ru.otus.spring.testing.students.config.aop.ServiceWithAop;
+import ru.otus.spring.testing.students.dao.Dao;
 import ru.otus.spring.testing.students.domain.Question;
 import ru.otus.spring.testing.students.domain.QuestionType;
+import ru.otus.spring.testing.students.service.InOutService;
+import ru.otus.spring.testing.students.service.L10nMessageService;
 import ru.otus.spring.testing.students.service.MenuService;
 
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
-import java.util.Scanner;
 
-@Service
+@ServiceWithAop
 @RequiredArgsConstructor
 public class MenuServiceQuestionConsole implements MenuService {
 
-    private static final String MESSAGE_HELLO = "Hi, student!\nWe start testing";
-    private static final String MESSAGE_PRINT_QUESTION = "Question: %s. Type: %s\n%s\n";
-    private static final String MESSAGE_OPTION = "%d - %s\n";
-    private static final String MESSAGE_FIELD_TYPING = "> ";
-    private static final String MESSAGE_CONGRATULATIONS = "Congratulations!";
-    private static final String MESSAGE_TEST_FAIL = "Test not passed.";
-    private static final String MESSAGE_INPUT_ERROR = "Input error. You entered an invalid value. This will continue until you enter a valid";
-
-    private final QuestionDao questionDao;
+    public static final String MESSAGE_HELLO = "common.hello";
+    public static final String MESSAGE_GET_LOCALE = "common.read.locale";
+    public static final String MESSAGE_GET_LOCALE_BTW = "common.read.locale.btw";
+    public static final String MESSAGE_PRINT_QUESTION = "common.question_description";
+    public static final String MESSAGE_FIELD_TYPING = "> ";
+    public static final String MESSAGE_CONGRATULATIONS = "common.congratulation";
+    public static final String MESSAGE_TEST_FAIL = "common.fail";
+    public static final String MESSAGE_INPUT_ERROR = "common.input_error";
 
     @Value("${min.correct.answer}")
     private long minCorrectAnswer;
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final L10nMessageService l10nMessageService;
+    private final Dao<Question> questionDao;
+    private final LocalizationConfig localizationConfig;
+    private final InOutService inOutService;
 
     @Override
     public void createOneSession() {
-        System.out.println(MESSAGE_HELLO);
+        initLocale();
+        printMessage(MESSAGE_HELLO);
         long correctAnswerCounter = questionDao.findAll().stream()
                 .filter(question -> {
-                    System.out.printf(MESSAGE_PRINT_QUESTION,
-                            question.getId(),
-                            question.getType(),
-                            question.getTestQuestion()
-                    );
+                    printMessage(MESSAGE_PRINT_QUESTION, question.getId(), question.getType());
+                    printMessage(question.getTestQuestion());
                     printOptions(question);
                     return checkAvailableInputWithOptions(question);
                 }).count();
         if (checkCorrectAnswers(correctAnswerCounter)) {
-            System.err.println(MESSAGE_TEST_FAIL);
+            printMessage(MESSAGE_TEST_FAIL);
         } else {
-            System.out.println(MESSAGE_CONGRATULATIONS);
+            printMessage(MESSAGE_CONGRATULATIONS);
         }
+    }
+
+
+    private void initLocale() {
+        printMessage(MESSAGE_GET_LOCALE);
+        localizationConfig.getLocalMapping()
+                .forEach((k, v) -> printMessage(MESSAGE_GET_LOCALE_BTW, k, v));
+
+        inOutService.print(MESSAGE_FIELD_TYPING);
+        String input = inOutService.read();
+
+        String localTag = localizationConfig.getLocalMapping().entrySet()
+                .stream()
+                .filter(entry -> entry.getKey().equals(input))
+                .findAny()
+                .map(Map.Entry::getValue)
+                .orElse(localizationConfig.getDefaultTag());
+        Locale.setDefault(Locale.forLanguageTag(localTag));
     }
 
     boolean checkAvailableInputWithOptions(Question question) {
         while (true) {
-            System.out.print(MESSAGE_FIELD_TYPING);
-            String input = scanner.nextLine();
-            if(question.getType().equals(QuestionType.COMMON)){
+            inOutService.print(MESSAGE_FIELD_TYPING);
+            String input = inOutService.read();
+            if (question.getType().equals(QuestionType.COMMON)) {
                 return false;
             } else {
                 if (Objects.isNull(question.getAvailableInput()) || input.matches(question.getAvailableInput())) {
                     return input.equalsIgnoreCase(question.getAnswer());
                 } else {
-                    System.out.println(MESSAGE_INPUT_ERROR);
+                    printMessage(MESSAGE_INPUT_ERROR);
                 }
             }
         }
     }
 
     private void printOptions(Question question) {
-        if (!question.getOptions().isEmpty()) {
-            for (int i = 0; i < question.getOptions().size(); i++) {
-                System.out.printf(MESSAGE_OPTION, i + 1, question.getOptions().get(i));
-            }
+        if (Objects.nonNull(question.getOptions())) {
+            question.getOptions().forEach(this::printMessage);
         }
     }
 
     boolean checkCorrectAnswers(long correctAnswerCounter) {
         return correctAnswerCounter < minCorrectAnswer;
+    }
+
+    private void printMessage(String message, Object... args) {
+        inOutService.println(l10nMessageService.getMessage(message, args));
     }
 
 }

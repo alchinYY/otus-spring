@@ -24,6 +24,7 @@ class CsvReaderClassPathResourcesTest {
                 TEST_CSV_FILE_FROM_RESOURCES,
                 csvQuestionDaoMapper(),
                 Question.class);
+        System.out.println(classPathResourcesCsvReader.readData().size());
         assertThat(classPathResourcesCsvReader.readData().size())
                 .isEqualTo(TEST_VALUE_MAX_QUESTION);
     }
