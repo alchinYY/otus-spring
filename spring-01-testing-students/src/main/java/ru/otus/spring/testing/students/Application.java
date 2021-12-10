@@ -1,19 +1,19 @@
 package ru.otus.spring.testing.students;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import ru.otus.spring.testing.students.service.MenuService;
 
-@ComponentScan
-@Configuration
+@SpringBootApplication
+@EnableAspectJAutoProxy
 public class Application {
 
-    public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
+	public static void main(String[] args) {
+		ApplicationContext applicationContext = SpringApplication.run(Application.class, args);
 
-        MenuService menuService = context.getBean(MenuService.class);
-        menuService.createOneSession();
-    }
+		applicationContext.getBean(MenuService.class).createOneSession();
+	}
+
 }
