@@ -1,5 +1,4 @@
 id,test_question,type,answer,options,available_input
-0,question.name,COMMON,,,
 1,question.study,TEXT,otus,,
 2,question.spring,TEST,2,"question.spring.option.1;question.spring.option.2;question.spring.option.3;question.spring.option.4","[1-4]"
 3,question.unit_test,TEST,2,"question.unit_test.option.1;question.unit_test.option.2;question.unit_test.option.3","[1-3]"

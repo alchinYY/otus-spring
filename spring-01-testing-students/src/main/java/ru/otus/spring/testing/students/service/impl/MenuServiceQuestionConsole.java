@@ -1,8 +1,6 @@
 package ru.otus.spring.testing.students.service.impl;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import ru.otus.spring.testing.students.config.LocalizationConfig;
 import ru.otus.spring.testing.students.config.aop.ServiceWithAop;
 import ru.otus.spring.testing.students.dao.Dao;
 import ru.otus.spring.testing.students.domain.Question;
@@ -11,35 +9,34 @@ import ru.otus.spring.testing.students.service.InOutService;
 import ru.otus.spring.testing.students.service.L10nMessageService;
 import ru.otus.spring.testing.students.service.MenuService;
 
-import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
+import static ru.otus.spring.testing.students.config.MessageBundle.*;
+
 @ServiceWithAop
-@RequiredArgsConstructor
 public class MenuServiceQuestionConsole implements MenuService {
 
-    public static final String MESSAGE_HELLO = "common.hello";
-    public static final String MESSAGE_GET_LOCALE = "common.read.locale";
-    public static final String MESSAGE_GET_LOCALE_BTW = "common.read.locale.btw";
-    public static final String MESSAGE_PRINT_QUESTION = "common.question_description";
-    public static final String MESSAGE_FIELD_TYPING = "> ";
-    public static final String MESSAGE_CONGRATULATIONS = "common.congratulation";
-    public static final String MESSAGE_TEST_FAIL = "common.fail";
-    public static final String MESSAGE_INPUT_ERROR = "common.input_error";
-
-    @Value("${min.correct.answer}")
-    private long minCorrectAnswer;
+    private final long minCorrectAnswer;
 
     private final L10nMessageService l10nMessageService;
     private final Dao<Question> questionDao;
-    private final LocalizationConfig localizationConfig;
     private final InOutService inOutService;
+
+    public MenuServiceQuestionConsole(
+            @Value("${min.correct.answer}") long minCorrectAnswer,
+            L10nMessageService l10nMessageService,
+            Dao<Question> questionDao,
+            InOutService inOutService
+    ) {
+        this.minCorrectAnswer = minCorrectAnswer;
+        this.l10nMessageService = l10nMessageService;
+        this.questionDao = questionDao;
+        this.inOutService = inOutService;
+    }
 
     @Override
     public void createOneSession() {
-        initLocale();
-        printMessage(MESSAGE_HELLO);
+        printMessage(MESSAGE_START_TEST);
         long correctAnswerCounter = questionDao.findAll().stream()
                 .filter(question -> {
                     printMessage(MESSAGE_PRINT_QUESTION, question.getId(), question.getType());
@@ -52,24 +49,6 @@ public class MenuServiceQuestionConsole implements MenuService {
         } else {
             printMessage(MESSAGE_CONGRATULATIONS);
         }
-    }
-
-
-    private void initLocale() {
-        printMessage(MESSAGE_GET_LOCALE);
-        localizationConfig.getLocalMapping()
-                .forEach((k, v) -> printMessage(MESSAGE_GET_LOCALE_BTW, k, v));
-
-        inOutService.print(MESSAGE_FIELD_TYPING);
-        String input = inOutService.read();
-
-        String localTag = localizationConfig.getLocalMapping().entrySet()
-                .stream()
-                .filter(entry -> entry.getKey().equals(input))
-                .findAny()
-                .map(Map.Entry::getValue)
-                .orElse(localizationConfig.getDefaultTag());
-        Locale.setDefault(Locale.forLanguageTag(localTag));
     }
 
     boolean checkAvailableInputWithOptions(Question question) {
@@ -94,7 +73,7 @@ public class MenuServiceQuestionConsole implements MenuService {
         }
     }
 
-    boolean checkCorrectAnswers(long correctAnswerCounter) {
+    private boolean checkCorrectAnswers(long correctAnswerCounter) {
         return correctAnswerCounter < minCorrectAnswer;
     }
 
