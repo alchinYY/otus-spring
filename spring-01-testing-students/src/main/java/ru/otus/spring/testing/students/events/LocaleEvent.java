@@ -17,6 +17,7 @@ public class LocaleEvent implements Event {
     private final L10nMessageService l10nMessageService;
     private final LocalizationConfig localizationConfig;
 
+    @Override
     public String viewDescription() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(l10nMessageService.getMessage(MESSAGE_GET_LOCALE)).append(NEXT_LINE);
@@ -26,6 +27,7 @@ public class LocaleEvent implements Event {
         return stringBuilder.toString();
     }
 
+    @Override
     public String action(Object... args) {
         return setLocale(args);
     }
