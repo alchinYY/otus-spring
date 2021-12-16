@@ -5,6 +5,13 @@ spring:
   output:
     ansi:
       enabled: always
+  shell:
+    interactive:
+      enabled: false
+  main:
+    allow-circular-references: true
+
+
 csv.file.name: /questions-for-students.csv
 min.correct.answer: 3
 
@@ -14,3 +21,4 @@ l10n:
   local-mapping:
     1: ru-RU
     2: ${l10n.default-tag}
+

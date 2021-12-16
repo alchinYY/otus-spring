@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<opencsv.vesion>5.5.2</opencsv.vesion>
+		<spring.shell.version>2.0.1.RELEASE</spring.shell.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,6 +27,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.shell</groupId>
+			<artifactId>spring-shell-starter</artifactId>
+			<version>${spring.shell.version}</version>
 		</dependency>
 
 		<dependency>
