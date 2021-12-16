@@ -1,0 +1,24 @@
+spring:
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+  output:
+    ansi:
+      enabled: always
+  shell:
+    interactive:
+      enabled: false
+  main:
+    allow-circular-references: true
+
+
+csv.file.name: /questions-for-students.csv
+min.correct.answer: 3
+
+
+l10n:
+  default-tag: en-EN
+  local-mapping:
+    1: ru-RU
+    2: ${l10n.default-tag}
+
