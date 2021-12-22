@@ -26,7 +26,7 @@ public class BookService implements EntityService<Book> {
     }
 
     @Override
-    public Book save(Book book){
+    public Long save(Book book){
         return bookDao.save(book);
     }
 

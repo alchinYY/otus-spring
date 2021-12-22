@@ -64,11 +64,11 @@ class BookServiceTest {
         Book bookAfter = new Book(1L, bookBefore.getName());
 
         when(bookDao.save(any()))
-                .thenReturn(bookAfter);
+                .thenReturn(bookAfter.getId());
 
 
         assertThat(bookService.save(bookBefore))
-                .isEqualTo(bookAfter);
+                .isEqualTo(bookAfter.getId());
         verify(bookDao, times(1)).save(any());
     }
 

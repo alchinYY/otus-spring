@@ -94,7 +94,7 @@ class AuthorJdbcDaoTest {
         Author authorExpected = new Author(AUTHOR_NEW_ID, AUTHOR_NEW_NAME);
 
         assertThat(genreDao.save(new Author(AUTHOR_NEW_NAME)))
-                .isEqualTo(authorExpected);
+                .isEqualTo(authorExpected.getId());
 
         assertThat(genreDao.getAll())
                 .hasSize(AUTHORS_BEFORE_SIZE + 1)

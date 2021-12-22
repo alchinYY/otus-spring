@@ -8,7 +8,7 @@ public interface EntityService<T> {
 
     List<T> getAll();
 
-    T save(T genre);
+    Long save(T genre);
 
     T updateById(Long id, T genre);
 

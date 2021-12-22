@@ -24,7 +24,7 @@ public class GenreService implements EntityService<Genre> {
     }
 
     @Override
-    public Genre save(Genre genre){
+    public Long save(Genre genre){
         return genreDao.save(genre);
     }
 

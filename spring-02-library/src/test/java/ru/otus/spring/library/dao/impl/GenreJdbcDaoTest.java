@@ -95,7 +95,7 @@ class GenreJdbcDaoTest {
         Genre genreExpected = new Genre(GENRE_NEW_ID, GENRE_NEW_NAME);
 
         assertThat(genreDao.save(new Genre(GENRE_NEW_NAME)))
-                .isEqualTo(genreExpected);
+                .isEqualTo(genreExpected.getId());
 
         assertThat(genreDao.getAll())
                 .hasSize(GENRES_BEFORE_SIZE + 1)

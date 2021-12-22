@@ -31,7 +31,7 @@ public class GenreShellCommands {
 
 
     @ShellMethod(value = "Work with genres, create", key = {CMD_KEY + "create"})
-    public Genre createCmd(String name){
+    public Long createCmd(String name){
         return service.save(new Genre(name));
     }
 

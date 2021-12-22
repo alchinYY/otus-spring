@@ -8,7 +8,7 @@ public interface Dao<ID, T> {
 
     void updateById(ID id, T entity);
 
-    T save(T entity);
+    ID save(T entity);
 
     List<T> getAll();
 

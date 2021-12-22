@@ -30,7 +30,7 @@ public class AuthorShellCommands {
     }
 
     @ShellMethod(value = "Work with authors", key = {CMD_KEY + "put"})
-    public Author createCmd(String name){
+    public Long createCmd(String name){
         return authorService.save(new Author(name));
     }
 

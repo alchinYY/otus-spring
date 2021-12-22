@@ -40,13 +40,12 @@ public class GenreJdbcDao implements Dao<Long, Genre> {
     }
 
     @Override
-    public Genre save(Genre entity) {
+    public Long save(Genre entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
                 .addValue("name", entity.getName());
         jdbc.update("INSERT INTO genres (name) VALUES :name;", mapSqlParameterSource, keyHolder);
-        entity.setId(keyHolder.getKey().longValue());
-        return entity;
+        return keyHolder.getKey().longValue();
     }
 
     @Override

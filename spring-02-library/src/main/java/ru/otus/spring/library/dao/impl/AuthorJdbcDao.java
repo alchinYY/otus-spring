@@ -40,13 +40,12 @@ public class AuthorJdbcDao implements Dao<Long, Author> {
     }
 
     @Override
-    public Author save(Author entity) {
+    public Long save(Author entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
                 .addValue("name", entity.getName());
         jdbc.update("insert into authors (name) values :name;", mapSqlParameterSource, keyHolder);
-        entity.setId(keyHolder.getKey().longValue());
-        return entity;
+        return keyHolder.getKey().longValue();
     }
 
     @Override

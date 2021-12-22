@@ -60,7 +60,7 @@ public class BookJdbcDao implements Dao<Long, Book> {
     }
 
     @Override
-    public Book save(final Book entity) {
+    public Long save(final Book entity) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
                 .addValue("name", entity.getName())
@@ -71,7 +71,7 @@ public class BookJdbcDao implements Dao<Long, Book> {
         entity.setId(keyHolder.getKey().longValue());
 
         insertBachAuthorBook(entity);
-        return entity;
+        return entity.getId();
     }
 
     @Override

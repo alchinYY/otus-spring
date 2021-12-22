@@ -25,7 +25,7 @@ public class AuthorService implements EntityService<Author> {
     }
 
     @Override
-    public Author save(Author author){
+    public Long save(Author author){
         return genreDao.save(author);
     }
 
