@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import ru.otus.spring.library.aop.DaoRepository;
 import ru.otus.spring.library.dao.Dao;
 import ru.otus.spring.library.domain.Genre;
+import ru.otus.spring.library.exception.DomainNotFound;
 
 import java.util.List;
 import java.util.Map;
@@ -30,9 +31,12 @@ public class GenreJdbcDao implements Dao<Long, Genre> {
 
     @Override
     public void updateById(Long id, Genre entity) {
-        jdbc.update("UPDATE genres SET name = :name WHERE id = :id;",
+        int rowCount = jdbc.update("UPDATE genres SET name = :name WHERE id = :id;",
                 Map.of("id", id, "name", entity.getName())
         );
+        if(rowCount == 0){
+            throw new DomainNotFound(id);
+        }
     }
 
     @Override

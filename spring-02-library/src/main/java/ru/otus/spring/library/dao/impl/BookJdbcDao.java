@@ -1,7 +1,6 @@
 package ru.otus.spring.library.dao.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -13,6 +12,7 @@ import ru.otus.spring.library.dao.Dao;
 import ru.otus.spring.library.dao.impl.ext.BookListResultSetExtractor;
 import ru.otus.spring.library.dao.impl.ext.BookResultSetExtractor;
 import ru.otus.spring.library.domain.Book;
+import ru.otus.spring.library.exception.DomainNotFound;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,13 +46,17 @@ public class BookJdbcDao implements Dao<Long, Book> {
 
     @Override
     public void updateById(Long id, Book entity) {
-        jdbc.update("UPDATE books b SET NAME = :name, genre_id = :genre_id " +
+        int rowCount = jdbc.update("UPDATE books b SET NAME = :name, genre_id = :genre_id " +
                         "WHERE id = :id;",
                 Map.of("id", id, "name", entity.getName(), "genre_id", entity.getGenre().getId())
         );
-        entity.setId(id);
-        jdbc.update("DELETE FROM authors_books WHERE book_id = :id", Map.of("id", entity.getId()));
-        insertBachAuthorBook(entity);
+        if(rowCount == 0){
+            throw new DomainNotFound(id);
+        } else {
+            entity.setId(id);
+            jdbc.update("DELETE FROM authors_books WHERE book_id = :id", Map.of("id", entity.getId()));
+            insertBachAuthorBook(entity);
+        }
     }
 
     @Override
@@ -62,7 +66,7 @@ public class BookJdbcDao implements Dao<Long, Book> {
                 .addValue("name", entity.getName())
                 .addValue("genre_id", entity.getGenre().getId());
 
-        jdbc.update("INSER INTO books (name, genre_id) VALUES (:name, :genre_id);", mapSqlParameterSource, keyHolder);
+        jdbc.update("INSERT INTO books (name, genre_id) VALUES (:name, :genre_id);", mapSqlParameterSource, keyHolder);
 
         entity.setId(keyHolder.getKey().longValue());
 

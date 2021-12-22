@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import ru.otus.spring.library.aop.DaoRepository;
 import ru.otus.spring.library.dao.Dao;
 import ru.otus.spring.library.domain.Author;
+import ru.otus.spring.library.exception.DomainNotFound;
 
 import java.util.List;
 import java.util.Map;
@@ -30,9 +31,12 @@ public class AuthorJdbcDao implements Dao<Long, Author> {
 
     @Override
     public void updateById(Long id, Author entity) {
-        jdbc.update("UPDATE authors SET name = :name WHERE id = :id;",
+        int rowCount = jdbc.update("UPDATE authors SET name = :name WHERE id = :id;",
                 Map.of("id", id, "name", entity.getName())
         );
+        if(rowCount == 0){
+            throw new DomainNotFound(id);
+        }
     }
 
     @Override

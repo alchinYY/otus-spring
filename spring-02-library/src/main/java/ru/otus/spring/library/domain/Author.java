@@ -3,12 +3,10 @@ package ru.otus.spring.library.domain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Builder
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class Author {
 
     private long id;
@@ -16,5 +14,9 @@ public class Author {
 
     public Author(String name) {
         this.name = name;
+    }
+
+    public Author(Long id) {
+        this.id = id;
     }
 }

@@ -18,4 +18,7 @@ public class Genre {
         this.name = name;
     }
 
+    public Genre(Long id){
+        this.id = id;
+    }
 }

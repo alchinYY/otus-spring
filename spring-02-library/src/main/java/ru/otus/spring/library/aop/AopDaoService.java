@@ -36,7 +36,6 @@ public class AopDaoService {
             throwing = "ex"
     )
     public void checkEmptyResultDataAccessException(JoinPoint joinPoint, EmptyResultDataAccessException ex) {
-
         throw new DomainNotFound(joinPoint.getArgs()[0], ex);
     }
 }

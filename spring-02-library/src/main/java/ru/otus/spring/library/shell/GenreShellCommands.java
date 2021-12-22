@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellOption;
-import ru.otus.spring.library.dao.Dao;
 import ru.otus.spring.library.domain.Genre;
+import ru.otus.spring.library.service.EntityService;
 
 import java.util.List;
 
@@ -16,35 +15,34 @@ import static ru.otus.spring.library.shell.GenreShellCommands.CMD_KEY;
 @RequiredArgsConstructor
 @ShellCommandGroup(CMD_KEY)
 public class GenreShellCommands {
-    protected static final String CMD_KEY = "genre";
+    protected static final String CMD_KEY = "genre ";
 
-    private final Dao<Long, Genre> genreDao;
+    private final EntityService<Genre> service;
 
-    @ShellMethod(value = "Work with genres, get", key = {CMD_KEY + " get"})
-    public Genre getCmd(@ShellOption(value = "id") long id){
-        return genreDao.getById(id);
+    @ShellMethod(value = "Work with genres, get", key = {CMD_KEY + "get"})
+    public Genre getCmd(long id){
+        return service.getById(id);
     }
 
-    @ShellMethod(value = "Work with genres, all", key = {CMD_KEY + " all"})
+    @ShellMethod(value = "Work with genres, all", key = {CMD_KEY + "all"})
     public List<Genre> getAllCmd(){
-        return genreDao.getAll();
+        return service.getAll();
     }
 
 
-    @ShellMethod(value = "Work with genres, create", key = {CMD_KEY + " create"})
+    @ShellMethod(value = "Work with genres, create", key = {CMD_KEY + "create"})
     public Genre createCmd(String name){
-        return genreDao.save(new Genre(name));
+        return service.save(new Genre(name));
     }
 
-    @ShellMethod(value = "Work with genres, update", key = {CMD_KEY + " update"})
+    @ShellMethod(value = "Work with genres, update", key = {CMD_KEY + "update"})
     public Genre updateCmd(Long id, String name){
-        genreDao.updateById(id, new Genre(name));
-        return genreDao.getById(id);
+        return service.updateById(id, new Genre(name));
     }
 
-    @ShellMethod(value = "Work with genres, delete", key = {CMD_KEY + " delete"})
+    @ShellMethod(value = "Work with genres, delete", key = {CMD_KEY + "delete"})
     public String deleteCmd(Long id){
-        genreDao.deleteById(id);
+        service.deleteById(id);
         return "OK";
     }
 }
