@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-12-18--0002-authors
+      author: alchinYY
+      preConditions:
+        - tableExists:
+            tableName: authors
+      loadUpdateData:
+        - tableName: authors
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: /data/2021-12-18--0002-authors.csv
