@@ -73,6 +73,7 @@ class CommentsJdbcDaoTest {
     }
 
     @Test
+    @DisplayName("возвращать ожидаемый список комментов по id связанной книги")
     void getByBookId() {
         assertThat(commentsJdbcDao.getByBookId(BOOK_CORRECT_ID))
                 .hasSize(1)
@@ -81,6 +82,7 @@ class CommentsJdbcDaoTest {
     }
 
     @Test
+    @DisplayName("обновлять тело комментария")
     void updateById() {
         commentsJdbcDao.updateById(COMMENT_CORRECT_ID, new Comment(COMMENT_CORRECT_BODY));
         Comment authorAfterUpdate = em.find(Comment.class, COMMENT_CORRECT_ID);
@@ -91,6 +93,7 @@ class CommentsJdbcDaoTest {
     }
 
     @Test
+    @DisplayName("обновлять тело комментария")
     void save() {
         Comment commentExpected = Comment.builder()
                 .id(COMMENT_NEW_ID)
@@ -107,6 +110,7 @@ class CommentsJdbcDaoTest {
     }
 
     @Test
+    @DisplayName("получать список комментариев")
     void getAll() {
         SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory()
                 .unwrap(SessionFactory.class);
@@ -125,6 +129,7 @@ class CommentsJdbcDaoTest {
     }
 
     @Test
+    @DisplayName("удалять комментарий")
     void deleteById() {
 
         commentsJdbcDao.deleteById(COMMENT_CORRECT_ID);
