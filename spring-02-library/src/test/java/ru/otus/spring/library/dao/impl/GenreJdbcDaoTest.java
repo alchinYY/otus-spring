@@ -4,23 +4,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.transaction.AfterTransaction;
 import ru.otus.spring.library.aop.AopDaoService;
 import ru.otus.spring.library.dao.Dao;
 import ru.otus.spring.library.domain.Genre;
-import ru.otus.spring.library.exception.DomainNotFound;
-import ru.otus.spring.library.mappers.GenreMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @DisplayName("Dao для работы с жанрами должно")
-@JdbcTest
-@Import({GenreJdbcDao.class, GenreMapper.class, AopDaoService.class})
+@DataJpaTest
+@Import({GenreJdbcDao.class, AopDaoService.class})
 class GenreJdbcDaoTest {
 
     private static final int GENRES_BEFORE_SIZE = 4;
@@ -41,8 +37,7 @@ class GenreJdbcDaoTest {
     private AopDaoService aopDaoService;
 
     @Autowired
-    private GenreMapper genreMapper;
-    
+    private TestEntityManager em;
 
     @BeforeEach
     void setUp() {
@@ -58,36 +53,32 @@ class GenreJdbcDaoTest {
         Genre genreExpected = new Genre(GENRE_CORRECT_ID, GENRE_CORRECT_NAME);
 
         assertThat(genreDao.getById(genreExpected.getId()))
+                .isNotEmpty()
+                .get()
                 .isEqualTo(genreExpected);
     }
 
     @Test
-    @DisplayName("возвращать ошибку, если жанр по id нет")
+    @DisplayName("возвращать empty, если жанр по id нет")
     void getById_idNotFound() {
-        assertThatExceptionOfType(EmptyResultDataAccessException.class)
-                .isThrownBy(() -> genreDao.getById(GENRE_NEW_ID));
+        assertThat(genreDao.getById(GENRE_NEW_ID))
+                .isEmpty();
     }
 
     @Test
     @DisplayName("обновлять все поля жанр по id")
     void updateById() {
-        assertThatExceptionOfType(DomainNotFound.class)
-                .isThrownBy(() -> genreDao.updateById(GENRE_NEW_ID, new Genre(GENRE_CORRECT_NAME)));
+        Genre genre = new Genre(GENRE_CORRECT_NAME);
+
+        genreDao.updateById(GENRE_CORRECT_ID, new Genre(GENRE_CORRECT_NAME));
+        Genre authorAfterUpdate = em.find(Genre.class, GENRE_CORRECT_ID);
+
+        assertThat(authorAfterUpdate)
+                .hasFieldOrPropertyWithValue("name", genre.getName())
+                .hasFieldOrPropertyWithValue("id", GENRE_CORRECT_ID);
 
     }
 
-    @Test
-    @DisplayName("выдавать ошибку, когда жанра по id нет")
-    void updateById_genreNotExists() {
-        Genre genreExpected = new Genre(GENRE_CORRECT_ID, GENRE_NEW_CORRECT_NAME);
-        Genre genreBefore = new Genre(GENRE_CORRECT_ID, GENRE_CORRECT_NAME);
-
-        genreDao.updateById(genreBefore.getId(), genreExpected);
-
-        assertThat(genreDao.getById(genreBefore.getId()))
-                .isEqualTo(genreExpected);
-
-    }
 
     @Test
     @DisplayName("корректно сохранять жанр")
@@ -95,12 +86,11 @@ class GenreJdbcDaoTest {
         Genre genreExpected = new Genre(GENRE_NEW_ID, GENRE_NEW_NAME);
 
         assertThat(genreDao.save(new Genre(GENRE_NEW_NAME)))
-                .isEqualTo(genreExpected.getId());
+                .isEqualTo(genreExpected);
 
         assertThat(genreDao.getAll())
                 .hasSize(GENRES_BEFORE_SIZE + 1)
                 .contains(genreExpected);
-
     }
 
     @Test
@@ -111,12 +101,6 @@ class GenreJdbcDaoTest {
                 .contains(new Genre(GENRE_CORRECT_FOR_REMOVE_ID, GENRE_CORRECT_FOR_REMOVE_NAME));
     }
 
-    @Test
-    @DisplayName("не удалять жанр по id, если есть связи с книгами")
-    void deleteById_ifBookRelation() {
-        assertThatExceptionOfType(DataIntegrityViolationException.class)
-                .isThrownBy(() -> genreDao.deleteById(GENRE_NOT_CORRECT_FOR_REMOVE_ID));
-    }
 
     @Test
     @DisplayName("удалять жанр по id")
@@ -127,7 +111,7 @@ class GenreJdbcDaoTest {
                 .hasSize(GENRES_BEFORE_SIZE - 1)
                 .doesNotContain(new Genre(GENRE_CORRECT_FOR_REMOVE_ID, GENRE_CORRECT_FOR_REMOVE_NAME));
 
-        assertThatExceptionOfType(EmptyResultDataAccessException.class)
-                .isThrownBy(() -> genreDao.getById(GENRE_CORRECT_FOR_REMOVE_ID));
+        assertThat(genreDao.getById(GENRE_CORRECT_FOR_REMOVE_ID))
+                .isEmpty();
     }
 }

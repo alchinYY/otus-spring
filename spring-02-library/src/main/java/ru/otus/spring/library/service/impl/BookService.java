@@ -2,11 +2,12 @@ package ru.otus.spring.library.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.library.dao.Dao;
 import ru.otus.spring.library.domain.Book;
+import ru.otus.spring.library.exception.DomainNotFound;
 import ru.otus.spring.library.service.EntityService;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -16,28 +17,33 @@ public class BookService implements EntityService<Book> {
     private final Dao<Long, Book> bookDao;
 
     @Override
+    @Transactional(readOnly = true)
     public Book getById(long id){
-        return bookDao.getById(id);
+        return bookDao.getById(id)
+                .orElseThrow(() -> new DomainNotFound("book"));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Book> getAll(){
         return bookDao.getAll();
     }
 
     @Override
+    @Transactional
     public Long save(Book book){
-        return bookDao.save(book);
+        return bookDao.save(book).getId();
     }
 
-    @Transactional
     @Override
+    @Transactional
     public Book updateById(Long bookId, Book book){
         bookDao.updateById(bookId, book);
-        return bookDao.getById(bookId);
+        return getById(bookId);
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id){
         bookDao.deleteById(id);
     }

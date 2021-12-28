@@ -11,6 +11,8 @@ import ru.otus.spring.library.exception.DomainNotFound;
 import ru.otus.spring.library.exception.RelationDataException;
 import ru.otus.spring.library.exception.UniqDomainException;
 
+import javax.persistence.NoResultException;
+
 @Component
 @Aspect
 public class AopDaoService {
@@ -36,6 +38,15 @@ public class AopDaoService {
             throwing = "ex"
     )
     public void checkEmptyResultDataAccessException(JoinPoint joinPoint, EmptyResultDataAccessException ex) {
+        System.out.println("123123123123");
+        throw new DomainNotFound(joinPoint.getArgs()[0], ex);
+    }
+
+    @AfterThrowing(value = "within(ru.otus.spring.library..*) && " +
+            "@target(ru.otus.spring.library.aop.DaoRepository)",
+            throwing = "ex"
+    )
+    public void checkNoResultException(JoinPoint joinPoint, NoResultException ex) {
         throw new DomainNotFound(joinPoint.getArgs()[0], ex);
     }
 }

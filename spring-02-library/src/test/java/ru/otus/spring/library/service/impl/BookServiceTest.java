@@ -11,6 +11,7 @@ import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -39,7 +40,7 @@ class BookServiceTest {
     void getById() {
         Book book = createExpectedBook();
         when(bookDao.getById(anyLong()))
-                .thenReturn(book);
+                .thenReturn(Optional.of(book));
 
         assertThat(bookService.getById(BOOK_CORRECT_ID))
                 .isEqualTo(book);
@@ -64,7 +65,7 @@ class BookServiceTest {
         Book bookAfter = new Book(1L, bookBefore.getName());
 
         when(bookDao.save(any()))
-                .thenReturn(bookAfter.getId());
+                .thenReturn(bookAfter);
 
 
         assertThat(bookService.save(bookBefore))
@@ -76,15 +77,15 @@ class BookServiceTest {
     void updateById() {
         Book bookBefore = Book.builder()
                 .name("old book")
-                .id(1)
+                .id(1L)
                 .build();
         Book bookAfter = Book.builder()
                 .name("new book")
-                .id(1)
+                .id(1L)
                 .build();
         doNothing().when(bookDao)
                 .updateById(bookBefore.getId(), bookAfter);
-        when(bookDao.getById(bookAfter.getId())).thenReturn(bookAfter);
+        when(bookDao.getById(bookAfter.getId())).thenReturn(Optional.of(bookAfter));
 
         assertThat(bookService.updateById(bookBefore.getId(), bookAfter))
                 .isEqualTo(bookAfter);

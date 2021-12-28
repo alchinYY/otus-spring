@@ -17,6 +17,8 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+    hibernate.ddl-auto: none
+
   shell:
     interactive:
       enabled: false

@@ -41,7 +41,7 @@ public class BookShellCommands {
             Long genreId,
             @Pattern(regexp = AUTHOR_ARRAY_STRING_FORMAT, message = AUTHOR_ARRAY_STRING_EXCEPTION_MESSAGE) String authorsId
     ) {
-       return bookService.save(createBookBody(name, genreId, authorsId));
+       return bookService.save(createBookBody(null, name, genreId, authorsId));
     }
 
     @ShellMethod(value = "Work with books, update", key = {CMD_KEY + "update"})
@@ -51,7 +51,7 @@ public class BookShellCommands {
             Long genreId,
             @Pattern(regexp = AUTHOR_ARRAY_STRING_FORMAT, message = AUTHOR_ARRAY_STRING_EXCEPTION_MESSAGE) String authorsId
     ) {
-        return bookService.updateById(bookId, createBookBody(name, genreId, authorsId));
+        return bookService.updateById(bookId, createBookBody(bookId, name, genreId, authorsId));
     }
 
     @ShellMethod(value = "Work with books, delete", key = {CMD_KEY + "delete"})
@@ -61,13 +61,14 @@ public class BookShellCommands {
     }
 
 
-    private Book createBookBody(String name, Long genreId, String authorsIdList) {
+    private Book createBookBody(Long bookId, String name, Long genreId, String authorsIdList) {
         List<Author> authors = Arrays.stream(authorsIdList.split(";"))
                 .map(Long::parseLong)
                 .map(Author::new)
                 .collect(Collectors.toList());
 
         return Book.builder()
+                .id(bookId)
                 .name(name)
                 .authors(authors)
                 .genre(new Genre(genreId))
