@@ -12,6 +12,7 @@ import ru.otus.spring.library.domain.Comment;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -26,6 +27,9 @@ class CommentServiceTest {
 
     @Autowired
     private CommentService commentService;
+
+    @MockBean
+    private BookService bookService;
 
     @MockBean
     private CommentsJdbcDao commentDao;
@@ -55,13 +59,16 @@ class CommentServiceTest {
 
     @Test
     void getAllByBookId() {
-        List<Comment> commentList = List.of(mock(Comment.class));
-        when(commentDao.getByBookId(anyLong())).thenReturn(commentList);
+        Set<Comment> comments = Set.of(mock(Comment.class));
+        Book book = Book.builder()
+                .comments(comments)
+                .build();
 
+        when(bookService.getById(anyLong())).thenReturn(book);
         assertThat(commentService.getAllByBookId(1L))
-                .isEqualTo(commentList);
+                .isEqualTo(comments);
 
-        verify(commentDao, times(1)).getByBookId(anyLong());
+        verify(bookService, times(1)).getById(anyLong());
     }
 
     @Test
@@ -82,31 +89,25 @@ class CommentServiceTest {
 
 
         assertThat(commentService.save(commentBefore))
-                .isEqualTo(commentAfter.getId());
+                .isEqualTo(commentAfter);
         verify(commentDao, times(1)).save(any());
     }
 
     @Test
     void updateById() {
-        Comment commentBefore = Comment.builder()
-                .body("body")
-                .id(1L)
-                .book(Book.builder().id(1L).build())
-                .build();
         Comment commentAfter = Comment.builder()
                 .body("body new")
                 .id(1L)
                 .book(Book.builder().id(1L).build())
                 .build();
-        doNothing().when(commentDao)
-                .updateById(commentBefore.getId(), commentAfter);
+        when(commentDao.save(commentAfter))
+                .thenReturn(commentAfter);
 
         when(commentDao.getById(commentAfter.getId())).thenReturn(Optional.of(commentAfter));
 
-        assertThat(commentService.updateById(commentBefore.getId(), commentAfter))
+        assertThat(commentService.updateById(commentAfter.getId(), commentAfter))
                 .isEqualTo(commentAfter);
-        verify(commentDao, times(1)).updateById(any(), any());
-        verify(commentDao, times(1)).getById(any());
+        verify(commentDao, times(1)).save(any());
     }
 
     @Test

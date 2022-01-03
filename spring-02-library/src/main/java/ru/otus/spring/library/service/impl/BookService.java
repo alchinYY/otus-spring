@@ -17,29 +17,27 @@ public class BookService implements EntityService<Book> {
     private final Dao<Long, Book> bookDao;
 
     @Override
-    @Transactional(readOnly = true)
     public Book getById(long id){
         return bookDao.getById(id)
                 .orElseThrow(() -> new DomainNotFound("book"));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Book> getAll(){
         return bookDao.getAll();
     }
 
     @Override
     @Transactional
-    public Long save(Book book){
-        return bookDao.save(book).getId();
+    public Book save(Book book){
+        return bookDao.save(book);
     }
 
     @Override
     @Transactional
     public Book updateById(Long bookId, Book book){
-        bookDao.updateById(bookId, book);
-        return getById(bookId);
+        book.setId(bookId);
+        return bookDao.save(book);
     }
 
     @Override

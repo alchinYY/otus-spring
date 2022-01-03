@@ -24,12 +24,6 @@ public class AuthorJdbcDao implements Dao<Long, Author> {
     }
 
     @Override
-    public void updateById(Long id, Author entity) {
-        entity.setId(id);
-        em.merge(entity);
-    }
-
-    @Override
     public Author save(Author entity) {
         if (entity.getId() == null || entity.getId() == 0) {
             em.persist(entity);

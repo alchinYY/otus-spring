@@ -68,9 +68,12 @@ class GenreJdbcDaoTest {
     @Test
     @DisplayName("обновлять все поля жанр по id")
     void updateById() {
-        Genre genre = new Genre(GENRE_CORRECT_NAME);
+        Genre genre = Genre.builder()
+                .id(GENRE_CORRECT_ID)
+                .name(GENRE_CORRECT_NAME)
+                .build();
 
-        genreDao.updateById(GENRE_CORRECT_ID, new Genre(GENRE_CORRECT_NAME));
+        genreDao.save(genre);
         Genre authorAfterUpdate = em.find(Genre.class, GENRE_CORRECT_ID);
 
         assertThat(authorAfterUpdate)
@@ -78,7 +81,6 @@ class GenreJdbcDaoTest {
                 .hasFieldOrPropertyWithValue("id", GENRE_CORRECT_ID);
 
     }
-
 
     @Test
     @DisplayName("корректно сохранять жанр")

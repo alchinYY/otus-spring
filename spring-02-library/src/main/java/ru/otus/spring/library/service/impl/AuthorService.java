@@ -14,37 +14,36 @@ import java.util.List;
 @Service
 public class AuthorService implements EntityService<Author> {
 
-    private final Dao<Long, Author> genreDao;
+    private final Dao<Long, Author> authorDao;
 
     @Override
-    @Transactional(readOnly = true)
     public Author getById(long id){
-        return genreDao.getById(id)
+        return authorDao.getById(id)
                 .orElseThrow(() -> new DomainNotFound("author"));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Author> getAll(){
-        return genreDao.getAll();
+        return authorDao.getAll();
     }
 
     @Override
     @Transactional
-    public Long save(Author author){
-        return genreDao.save(author).getId();
+    public Author save(Author author){
+        return authorDao.save(author);
     }
 
     @Override
     @Transactional
     public Author updateById(Long id, Author author){
-        genreDao.updateById(id, author);
-        return getById(id);
+        Author authorFromDb = getById(id);
+        authorFromDb.setName(author.getName());
+        return authorDao.save(authorFromDb);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id){
-        genreDao.deleteById(id);
+        authorDao.deleteById(id);
     }
 }

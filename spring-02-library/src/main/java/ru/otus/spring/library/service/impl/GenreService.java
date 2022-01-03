@@ -17,28 +17,27 @@ public class GenreService implements EntityService<Genre> {
     private final Dao<Long, Genre> genreDao;
 
     @Override
-    @Transactional(readOnly = true)
     public Genre getById(long id){
         return genreDao.getById(id).orElseThrow(() -> new DomainNotFound("genre"));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Genre> getAll(){
         return genreDao.getAll();
     }
 
     @Override
     @Transactional
-    public Long save(Genre genre){
-        return genreDao.save(genre).getId();
+    public Genre save(Genre genre){
+        return genreDao.save(genre);
     }
 
     @Override
     @Transactional
     public Genre updateById(Long id, Genre genre){
-        genreDao.updateById(id, genre);
-        return getById(id);
+        Genre genreFromDb = getById(id);
+        genreFromDb.setName(genre.getName());
+        return genreDao.save(genreFromDb);
     }
 
     @Override

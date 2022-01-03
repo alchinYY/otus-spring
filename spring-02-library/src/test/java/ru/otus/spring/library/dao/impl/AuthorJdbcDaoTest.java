@@ -67,9 +67,11 @@ class AuthorJdbcDaoTest {
     @Test
     @DisplayName("обновлять все поля автора по id")
     void updateById() {
-        Author author = new Author(AUTHOR_CORRECT_NAME);
+        Author author = Author.builder()
+                .id(AUTHOR_CORRECT_ID)
+                .name(AUTHOR_CORRECT_NAME)
+                .build(); new Author(AUTHOR_CORRECT_NAME);
 
-        authorDao.updateById(AUTHOR_CORRECT_ID, new Author(AUTHOR_CORRECT_NAME));
         Author authorAfterUpdate = em.find(Author.class, AUTHOR_CORRECT_ID);
 
         assertThat(authorAfterUpdate)

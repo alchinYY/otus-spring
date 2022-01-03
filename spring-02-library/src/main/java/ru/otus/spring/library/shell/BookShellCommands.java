@@ -36,7 +36,7 @@ public class BookShellCommands {
     }
 
     @ShellMethod(value = "Work with books, create", key = {CMD_KEY + "create"})
-    public Long createCmd(
+    public Book createCmd(
             String name,
             Long genreId,
             @Pattern(regexp = AUTHOR_ARRAY_STRING_FORMAT, message = AUTHOR_ARRAY_STRING_EXCEPTION_MESSAGE) String authorsId

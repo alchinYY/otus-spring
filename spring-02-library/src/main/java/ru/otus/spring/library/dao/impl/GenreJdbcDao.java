@@ -24,12 +24,6 @@ public class GenreJdbcDao implements Dao<Long, Genre> {
     }
 
     @Override
-    public void updateById(Long id, Genre entity) {
-        entity.setId(id);
-        em.merge(entity);
-    }
-
-    @Override
     public Genre save(Genre entity) {
         if(entity.getId() == null || entity.getId() == 0){
             em.persist(entity);

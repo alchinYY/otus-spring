@@ -17,7 +17,8 @@ import javax.persistence.NoResultException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @DisplayName("Dao для работы с комментами должно")
 @DataJpaTest
@@ -25,12 +26,9 @@ import static org.assertj.core.api.Assertions.*;
 class CommentsJdbcDaoTest {
 
     private static final int COMMENTS_BEFORE_SIZE = 4;
-    private static final String COMMENT_CORRECT_FOR_REMOVE_BODY = "Для удаления";
-    private static final Long COMMENT_CORRECT_FOR_REMOVE_ID = 4L;
     private static final LocalDateTime COMMENT_CORRECT_DATE = LocalDateTime.parse("2015-12-18T17:53:02.594");
     private static final String COMMENT_CORRECT_BODY = "Очень крутая книга";
     private static final Long COMMENT_CORRECT_ID = 1L;
-    private static final String COMMENT_NEW_CORRECT_BODY = "Толкин-Джон Рональд Руэл";
 
     private static final Long COMMENT_NEW_ID = 5L;
     private static final String COMMENT_NEW_BODY = "Книжек еще не написал";
@@ -39,9 +37,6 @@ class CommentsJdbcDaoTest {
 
     @Autowired
     private CommentsJdbcDao commentsJdbcDao;
-
-    @Autowired
-    private AopDaoService aopDaoService;
 
     @Autowired
     private TestEntityManager em;
@@ -73,18 +68,15 @@ class CommentsJdbcDaoTest {
     }
 
     @Test
-    @DisplayName("возвращать ожидаемый список комментов по id связанной книги")
-    void getByBookId() {
-        assertThat(commentsJdbcDao.getByBookId(BOOK_CORRECT_ID))
-                .hasSize(1)
-                .extracting("body", "id")
-                .contains(tuple(COMMENT_CORRECT_FOR_REMOVE_BODY, COMMENT_CORRECT_FOR_REMOVE_ID));
-    }
-
-    @Test
     @DisplayName("обновлять тело комментария")
     void updateById() {
-        commentsJdbcDao.updateById(COMMENT_CORRECT_ID, new Comment(COMMENT_CORRECT_BODY));
+
+        Comment comment = Comment.builder()
+                .id(COMMENT_CORRECT_ID)
+                .body(COMMENT_CORRECT_BODY)
+                .build();
+
+        commentsJdbcDao.save(comment);
         Comment authorAfterUpdate = em.find(Comment.class, COMMENT_CORRECT_ID);
 
         assertThat(authorAfterUpdate)
@@ -116,12 +108,10 @@ class CommentsJdbcDaoTest {
                 .unwrap(SessionFactory.class);
         sessionFactory.getStatistics().setStatisticsEnabled(true);
 
-
         System.out.println("\n\n\n\n----------------------------------------------------------------------------------------------------------");
         List<Comment> comments = commentsJdbcDao.getAll();
         assertThat(comments).isNotNull().hasSize(COMMENTS_BEFORE_SIZE)
                 .allMatch(c -> !c.getBody().equals(""))
-                .allMatch(c -> c.getDate() != null)
                 .allMatch(c -> c.getDate() != null)
                 .allMatch(c -> c.getBook() != null);
         System.out.println("----------------------------------------------------------------------------------------------------------\n\n\n\n");

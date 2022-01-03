@@ -9,47 +9,47 @@ import ru.otus.spring.library.exception.DomainNotFound;
 import ru.otus.spring.library.service.EntityService;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService implements EntityService<Comment> {
 
     private final CommentsJdbcDao commentDao;
+    private final BookService bookService;
 
     @Override
-    @Transactional(readOnly = true)
     public Comment getById(long id) {
         return commentDao.getById(id)
                 .orElseThrow(() -> new DomainNotFound("comment"));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Comment> getAll() {
         return commentDao.getAll();
     }
 
     @Transactional(readOnly = true)
-    public List<Comment> getAllByBookId(Long id) {
-        return commentDao.getByBookId(id);
+    public Set<Comment> getAllByBookId(Long id) {
+        return bookService.getById(id).getComments();
     }
-
 
     @Override
     @Transactional
-    public Long save(Comment comment) {
-        return commentDao.save(comment).getId();
+    public Comment save(Comment comment) {
+        comment.setBook(bookService.getById(comment.getBook().getId()));
+        return commentDao.save(comment);
     }
 
     @Override
     @Transactional
     public Comment updateById(Long id, Comment comment) {
-        commentDao.updateById(id, comment);
-        return getById(id);
+        Comment commentFromDb = getById(id);
+        commentFromDb.setBody(comment.getBody());
+        return commentDao.save(commentFromDb);
     }
 
     @Override
-    @Transactional
     public void deleteById(Long id) {
         commentDao.deleteById(id);
     }

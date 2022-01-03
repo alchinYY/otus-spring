@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
-@EqualsAndHashCode(exclude = {"authors", "comments"})
+@EqualsAndHashCode(of = {"id", "name"})
 @Data
 @Builder
 @AllArgsConstructor
@@ -25,7 +25,7 @@ public class Book {
     private String name;
 
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
@@ -36,7 +36,8 @@ public class Book {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
     @ToString.Exclude
     private Set<Comment> comments;
 

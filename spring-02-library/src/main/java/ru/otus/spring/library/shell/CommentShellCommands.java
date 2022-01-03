@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Comment;
-import ru.otus.spring.library.service.impl.BookService;
 import ru.otus.spring.library.service.impl.CommentService;
 
 import java.util.List;
+import java.util.Set;
 
 @ShellComponent
 @RequiredArgsConstructor
@@ -17,7 +18,6 @@ public class CommentShellCommands {
     protected static final String CMD_KEY = "comment ";
 
     private final CommentService service;
-    private final BookService bookService;
 
     @ShellMethod(value = "Work with comment, get", key = {CMD_KEY + "get"})
     public Comment getCmd(long id){
@@ -30,8 +30,8 @@ public class CommentShellCommands {
     }
 
     @ShellMethod(value = "Work with comment, save", key = {CMD_KEY + "save"})
-    public Long saveCmd(String body, Long bookId){
-        return service.save(new Comment(body, bookService.getById(bookId)));
+    public Comment saveCmd(String body, Long bookId){
+        return service.save(new Comment(body, Book.builder().id(bookId).build()));
     }
 
     @ShellMethod(value = "Work with comment, update", key = {CMD_KEY + "update"})
@@ -40,7 +40,7 @@ public class CommentShellCommands {
     }
 
     @ShellMethod(value = "Work with comment, by book id", key = {CMD_KEY + "book"})
-    public List<Comment> getAllByBookIdCmd(Long id){
+    public Set<Comment> getAllByBookIdCmd(Long id){
         return service.getAllByBookId(id);
     }
 

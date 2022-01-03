@@ -69,28 +69,24 @@ class BookServiceTest {
 
 
         assertThat(bookService.save(bookBefore))
-                .isEqualTo(bookAfter.getId());
+                .isEqualTo(bookAfter);
         verify(bookDao, times(1)).save(any());
     }
 
     @Test
     void updateById() {
-        Book bookBefore = Book.builder()
-                .name("old book")
-                .id(1L)
-                .build();
         Book bookAfter = Book.builder()
                 .name("new book")
                 .id(1L)
                 .build();
-        doNothing().when(bookDao)
-                .updateById(bookBefore.getId(), bookAfter);
+        when(bookDao.save(bookAfter))
+                .thenReturn(bookAfter);
+
         when(bookDao.getById(bookAfter.getId())).thenReturn(Optional.of(bookAfter));
 
-        assertThat(bookService.updateById(bookBefore.getId(), bookAfter))
+        assertThat(bookService.updateById(bookAfter.getId(), bookAfter))
                 .isEqualTo(bookAfter);
-        verify(bookDao, times(1)).updateById(any(), any());
-        verify(bookDao, times(1)).getById(any());
+        verify(bookDao, times(1)).save(any());
     }
 
     @Test

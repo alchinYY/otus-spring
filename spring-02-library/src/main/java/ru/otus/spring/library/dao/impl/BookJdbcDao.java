@@ -21,18 +21,11 @@ public class BookJdbcDao implements Dao<Long, Book> {
     @Override
     public Optional<Book> getById(Long id) {
         TypedQuery<Book> query = em.createQuery(
-                "SELECT b FROM Book b LEFT JOIN FETCH b.authors LEFT JOIN FETCH b.genre WHERE b.id = :id",
+                "SELECT b FROM Book b LEFT JOIN FETCH b.authors LEFT JOIN FETCH b.genre JOIN FETCH b.comments WHERE b.id = :id",
                 Book.class
         );
         query.setParameter("id", id);
         return Optional.ofNullable(query.getSingleResult());
-    }
-
-    @Override
-    public void updateById(Long id, Book entity) {
-        entity.setId(id);
-        System.out.println(entity);
-        em.merge(entity);
     }
 
     @Override

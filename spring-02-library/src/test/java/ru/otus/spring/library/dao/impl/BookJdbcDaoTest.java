@@ -75,7 +75,7 @@ class BookJdbcDaoTest {
     }
 
     @Test
-    @DisplayName("возвращать ошибку, если книги с заданным id нет")
+    @DisplayName("возвращать isEmpty, если книги с заданным id нет")
     void getById_bookNotFound() {
         assertThatExceptionOfType(NoResultException.class)
                 .isThrownBy(() -> bookJdbcDao.getById(BOOK_NOT_CORRECT_ID))
@@ -95,8 +95,9 @@ class BookJdbcDaoTest {
                 ))
                 .build();
         Book bookForUpdate = createBookAfterUpdate(EXPECTED_GENRE_ID_UPD, EXPECTED_GENRE_NAME_UPD);
+        bookForUpdate.setId(BOOK_CORRECT_ID);
 
-        bookJdbcDao.updateById(BOOK_CORRECT_ID, bookForUpdate);
+        bookJdbcDao.save(bookForUpdate);
 
         assertThat(em.find(Book.class, BOOK_CORRECT_ID))
                 .isEqualTo(bookExpected);

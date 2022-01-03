@@ -1,16 +1,13 @@
 package ru.otus.spring.library.domain;
 
 import lombok.*;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Data
-@EqualsAndHashCode(exclude = "book")
+@EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -31,9 +28,7 @@ public class Comment {
     @Column(name = "body", nullable = false, length = 500)
     private String body;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH})
-    @Fetch(value = FetchMode.SELECT)
-    @BatchSize(size = 1)
+    @ManyToOne(cascade = {CascadeType.DETACH})
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
