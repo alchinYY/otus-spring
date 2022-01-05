@@ -10,6 +10,7 @@ import ru.otus.spring.library.dao.impl.CommentsJdbcDao;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Comment;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -85,10 +86,14 @@ class CommentServiceTest {
         when(commentDao.save(any()))
                 .thenReturn(commentAfter);
 
-
+        Book book = new Book();
+        book.setComments(new ArrayList<>());
+        when(bookService.getById(anyLong()))
+                .thenReturn(book);
+        commentBefore.setId(commentAfter.getId());
         assertThat(commentService.save(commentBefore, 1L))
                 .isEqualTo(commentAfter);
-        verify(commentDao, times(1)).save(any());
+        verify(bookService, times(1)).getById(anyLong());
     }
 
     @Test
