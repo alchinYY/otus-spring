@@ -91,8 +91,8 @@ class CommentsJdbcDaoTest {
 
 
         assertThat(commentsJdbcDao.save(new Comment(COMMENT_NEW_BODY)))
-                .hasFieldOrPropertyWithValue("body", COMMENT_NEW_BODY)
-                .hasFieldOrPropertyWithValue("id", COMMENT_NEW_ID)
+                .hasFieldOrPropertyWithValue("body", commentExpected.getBody())
+                .hasFieldOrPropertyWithValue("id", commentExpected.getId())
                 .hasNoNullFieldsOrPropertiesExcept("date");
     }
 
