@@ -28,7 +28,7 @@ public class Comment {
     @Column(name = "body", nullable = false, length = 500)
     private String body;
 
-    @ManyToOne(cascade = {CascadeType.DETACH})
+    @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
@@ -37,8 +37,7 @@ public class Comment {
         return "Comment(id = " + id + ", " +
                 "date = " + date + ", " +
                 "body = \"" + body + "\"," +
-                "book.id = " + book.getId() + ", " +
-                "book.name = " + book.getName() + ")";
+                "book.id = " + book.getId() + ")";
     }
 
     public Comment(String body){

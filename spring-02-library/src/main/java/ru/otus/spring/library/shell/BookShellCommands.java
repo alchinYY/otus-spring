@@ -12,6 +12,7 @@ import ru.otus.spring.library.service.EntityService;
 import javax.validation.constraints.Pattern;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @ShellComponent
@@ -62,10 +63,10 @@ public class BookShellCommands {
 
 
     private Book createBookBody(Long bookId, String name, Long genreId, String authorsIdList) {
-        List<Author> authors = Arrays.stream(authorsIdList.split(";"))
+        Set<Author> authors = Arrays.stream(authorsIdList.split(";"))
                 .map(Long::parseLong)
                 .map(Author::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
         return Book.builder()
                 .id(bookId)

@@ -100,14 +100,11 @@ class CommentServiceTest {
                 .id(1L)
                 .book(Book.builder().id(1L).build())
                 .build();
-        when(commentDao.save(commentAfter))
-                .thenReturn(commentAfter);
 
         when(commentDao.getById(commentAfter.getId())).thenReturn(Optional.of(commentAfter));
 
         assertThat(commentService.updateById(commentAfter.getId(), commentAfter))
                 .isEqualTo(commentAfter);
-        verify(commentDao, times(1)).save(any());
     }
 
     @Test

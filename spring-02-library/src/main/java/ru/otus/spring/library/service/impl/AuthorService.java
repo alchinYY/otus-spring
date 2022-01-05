@@ -38,7 +38,7 @@ public class AuthorService implements EntityService<Author> {
     public Author updateById(Long id, Author author){
         Author authorFromDb = getById(id);
         authorFromDb.setName(author.getName());
-        return authorDao.save(authorFromDb);
+        return authorFromDb;
     }
 
     @Override

@@ -18,9 +18,7 @@ public class CommentsJdbcDao implements Dao<Long, Comment> {
 
     @Override
     public Optional<Comment> getById(Long id) {
-        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c JOIN FETCH c.book where c.id = :id", Comment.class);
-        query.setParameter("id", id);
-        return Optional.ofNullable(query.getSingleResult());
+        return Optional.ofNullable(em.find(Comment.class, id));
     }
 
     @Override
@@ -34,7 +32,7 @@ public class CommentsJdbcDao implements Dao<Long, Comment> {
 
     @Override
     public List<Comment> getAll() {
-        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c JOIN FETCH c.book", Comment.class);
+        TypedQuery<Comment> query = em.createQuery("SELECT c FROM Comment c", Comment.class);
         return query.getResultList();
     }
 

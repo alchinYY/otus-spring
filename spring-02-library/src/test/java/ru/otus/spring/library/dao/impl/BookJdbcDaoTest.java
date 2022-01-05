@@ -14,12 +14,10 @@ import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Genre;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @DisplayName("Dao для работы с книгами должно")
 @DataJpaTest
@@ -77,9 +75,8 @@ class BookJdbcDaoTest {
     @Test
     @DisplayName("возвращать isEmpty, если книги с заданным id нет")
     void getById_bookNotFound() {
-        assertThatExceptionOfType(NoResultException.class)
-                .isThrownBy(() -> bookJdbcDao.getById(BOOK_NOT_CORRECT_ID))
-                .withMessage("No entity found for query");
+        assertThat(bookJdbcDao.getById(BOOK_NOT_CORRECT_ID))
+                .isEmpty();
     }
 
     @Test
@@ -89,7 +86,7 @@ class BookJdbcDaoTest {
                 .id(BOOK_CORRECT_ID)
                 .name(EXPECTED_BOOK_NAME_UPD)
                 .genre(new Genre(EXPECTED_GENRE_ID_UPD, EXPECTED_GENRE_NAME_UPD))
-                .authors(List.of(
+                .authors(Set.of(
                         new Author(EXPECTED_AUTHOR_ID_UPD, EXPECTED_AUTHOR_NAME_UPD),
                         new Author(EXPECTED_AUTHOR_ID_UPD_2, EXPECTED_AUTHOR_NAME_UPD_2)
                 ))
@@ -111,7 +108,7 @@ class BookJdbcDaoTest {
                 .id(BOOK_AFTER_SAVE_ID)
                 .name(EXPECTED_BOOK_NAME_UPD)
                 .genre(new Genre(EXPECTED_GENRE_ID_UPD, EXPECTED_GENRE_NAME_UPD))
-                .authors(List.of(
+                .authors(Set.of(
                         new Author(EXPECTED_AUTHOR_ID_UPD, EXPECTED_AUTHOR_NAME_UPD),
                         new Author(EXPECTED_AUTHOR_ID_UPD_2, EXPECTED_AUTHOR_NAME_UPD_2)
                 ))
@@ -142,15 +139,15 @@ class BookJdbcDaoTest {
                 .hasSize(3)
                 .doesNotContain(createExpectedBook());
 
-        assertThatExceptionOfType(NoResultException.class)
-                .isThrownBy(() -> bookJdbcDao.getById(BOOK_CORRECT_ID));
+        assertThat(bookJdbcDao.getById(BOOK_CORRECT_ID))
+                .isEmpty();
     }
 
     private Book createBookAfterUpdate(Long expectedGenreIdUpd, String genreName) {
         return Book.builder()
                 .name(EXPECTED_BOOK_NAME_UPD)
                 .genre(new Genre(expectedGenreIdUpd, genreName))
-                .authors(List.of(
+                .authors(Set.of(
                         new Author(EXPECTED_AUTHOR_ID_UPD, EXPECTED_AUTHOR_NAME_UPD),
                         new Author(EXPECTED_AUTHOR_ID_UPD_2, EXPECTED_AUTHOR_NAME_UPD_2)
                 ))
@@ -163,7 +160,7 @@ class BookJdbcDaoTest {
                 .comments(Set.of())
                 .name(EXPECTED_BOOK_NAME)
                 .genre(new Genre(EXPECTED_GENRE_ID, EXPECTED_GENRE_NAME))
-                .authors(List.of(new Author(EXPECTED_AUTHOR_ID, EXPECTED_AUTHOR_NAME)))
+                .authors(Set.of(new Author(EXPECTED_AUTHOR_ID, EXPECTED_AUTHOR_NAME)))
                 .build();
     }
 

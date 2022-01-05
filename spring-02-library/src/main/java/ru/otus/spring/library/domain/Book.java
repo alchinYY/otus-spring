@@ -1,9 +1,6 @@
 package ru.otus.spring.library.domain;
 
 import lombok.*;
-import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,20 +21,16 @@ public class Book {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private List<Author> authors;
+    private Set<Author> authors;
 
-    @Fetch(FetchMode.SELECT)
-    @BatchSize(size = 1)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @ToString.Exclude
     private Set<Comment> comments;
 

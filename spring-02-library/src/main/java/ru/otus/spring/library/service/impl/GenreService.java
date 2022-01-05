@@ -37,7 +37,7 @@ public class GenreService implements EntityService<Genre> {
     public Genre updateById(Long id, Genre genre){
         Genre genreFromDb = getById(id);
         genreFromDb.setName(genre.getName());
-        return genreDao.save(genreFromDb);
+        return genreFromDb;
     }
 
     @Override

@@ -127,8 +127,7 @@ class CommentsJdbcDaoTest {
         assertThat(commentsJdbcDao.getAll())
                 .hasSize(COMMENTS_BEFORE_SIZE - 1);
 
-        assertThatExceptionOfType(NoResultException.class)
-                .isThrownBy(() -> commentsJdbcDao.getById(COMMENT_CORRECT_ID));
-
+        assertThat(commentsJdbcDao.getById(COMMENT_CORRECT_ID))
+                .isEmpty();
     }
 }

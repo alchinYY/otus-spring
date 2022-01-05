@@ -20,12 +20,7 @@ public class BookJdbcDao implements Dao<Long, Book> {
 
     @Override
     public Optional<Book> getById(Long id) {
-        TypedQuery<Book> query = em.createQuery(
-                "SELECT b FROM Book b LEFT JOIN FETCH b.authors LEFT JOIN FETCH b.genre JOIN FETCH b.comments WHERE b.id = :id",
-                Book.class
-        );
-        query.setParameter("id", id);
-        return Optional.ofNullable(query.getSingleResult());
+        return Optional.ofNullable(em.find(Book.class, id));
     }
 
     @Override
@@ -41,7 +36,7 @@ public class BookJdbcDao implements Dao<Long, Book> {
     @Override
     public List<Book> getAll() {
         TypedQuery<Book> query = em.createQuery(
-                "SELECT DISTINCT b FROM Book b LEFT JOIN FETCH b.genre JOIN FETCH b.authors", Book.class
+                "SELECT DISTINCT b FROM Book b LEFT JOIN FETCH b.genre JOIN FETCH b.authors LEFT JOIN FETCH b.comments", Book.class
         );
         return query.getResultList();
     }

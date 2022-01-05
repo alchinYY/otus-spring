@@ -12,6 +12,7 @@ import ru.otus.spring.library.domain.Genre;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -102,7 +103,7 @@ class BookServiceTest {
                 .id(BOOK_CORRECT_ID)
                 .name(EXPECTED_BOOK_NAME)
                 .genre(new Genre(EXPECTED_GENRE_ID, EXPECTED_GENRE_NAME))
-                .authors(List.of(new Author(EXPECTED_AUTHOR_ID, EXPECTED_AUTHOR_NAME)))
+                .authors(Set.of(new Author(EXPECTED_AUTHOR_ID, EXPECTED_AUTHOR_NAME)))
                 .build();
     }
 

@@ -46,10 +46,11 @@ public class CommentService implements EntityService<Comment> {
     public Comment updateById(Long id, Comment comment) {
         Comment commentFromDb = getById(id);
         commentFromDb.setBody(comment.getBody());
-        return commentDao.save(commentFromDb);
+        return commentFromDb;
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         commentDao.deleteById(id);
     }
