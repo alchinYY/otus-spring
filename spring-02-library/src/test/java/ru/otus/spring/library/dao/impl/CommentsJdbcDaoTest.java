@@ -13,12 +13,10 @@ import ru.otus.spring.library.aop.AopDaoService;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Comment;
 
-import javax.persistence.NoResultException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @DisplayName("Dao для работы с комментами должно")
 @DataJpaTest
@@ -58,7 +56,6 @@ class CommentsJdbcDaoTest {
                 .body(COMMENT_CORRECT_BODY)
                 .id(COMMENT_CORRECT_ID)
                 .date(COMMENT_CORRECT_DATE)
-                .book(Book.builder().id(COMMENT_CORRECT_ID).build())
                 .build();
 
         assertThat(commentsJdbcDao.getById(commentExpected.getId()))
@@ -89,12 +86,11 @@ class CommentsJdbcDaoTest {
     void save() {
         Comment commentExpected = Comment.builder()
                 .id(COMMENT_NEW_ID)
-                .book(em.find(Book.class, BOOK_CORRECT_ID))
                 .body(COMMENT_NEW_BODY)
                 .build();
 
 
-        assertThat(commentsJdbcDao.save(new Comment(COMMENT_NEW_BODY, commentExpected.getBook())))
+        assertThat(commentsJdbcDao.save(new Comment(COMMENT_NEW_BODY)))
                 .hasFieldOrPropertyWithValue("body", COMMENT_NEW_BODY)
                 .hasFieldOrPropertyWithValue("id", COMMENT_NEW_ID)
                 .hasFieldOrPropertyWithValue("book", em.find(Book.class, BOOK_CORRECT_ID))
@@ -112,8 +108,7 @@ class CommentsJdbcDaoTest {
         List<Comment> comments = commentsJdbcDao.getAll();
         assertThat(comments).isNotNull().hasSize(COMMENTS_BEFORE_SIZE)
                 .allMatch(c -> !c.getBody().equals(""))
-                .allMatch(c -> c.getDate() != null)
-                .allMatch(c -> c.getBook() != null);
+                .allMatch(c -> c.getDate() != null);
         System.out.println("----------------------------------------------------------------------------------------------------------\n\n\n\n");
         assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(1L);
     }

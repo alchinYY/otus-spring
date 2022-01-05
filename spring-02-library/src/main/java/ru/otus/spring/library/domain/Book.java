@@ -30,9 +30,10 @@ public class Book {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "book_id")
     @ToString.Exclude
-    private Set<Comment> comments;
+    private List<Comment> comments;
 
     public Book(long id, String name){
         this.id = id;

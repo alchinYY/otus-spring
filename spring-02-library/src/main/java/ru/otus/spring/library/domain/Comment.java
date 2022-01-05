@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @Table(name = "comments")
-@NamedEntityGraph(name = "comment-entity-graph",
-        attributeNodes = @NamedAttributeNode("book"))
 public class Comment {
 
     @Id
@@ -28,18 +26,6 @@ public class Comment {
     @Column(name = "body", nullable = false, length = 500)
     private String body;
 
-    @ManyToOne(cascade = {CascadeType.DETACH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id", nullable = false)
-    private Book book;
-
-    @Override
-    public String toString() {
-        return "Comment(id = " + id + ", " +
-                "date = " + date + ", " +
-                "body = \"" + body + "\"," +
-                "book.id = " + book.getId() + ")";
-    }
-
     public Comment(String body){
         this.body = body;
     }
@@ -49,8 +35,4 @@ public class Comment {
         this.id = id;
     }
 
-    public Comment(String body, Book book){
-        this.body = body;
-        this.book = book;
-    }
 }

@@ -59,7 +59,7 @@ class CommentServiceTest {
 
     @Test
     void getAllByBookId() {
-        Set<Comment> comments = Set.of(mock(Comment.class));
+        List<Comment> comments = List.of(mock(Comment.class));
         Book book = Book.builder()
                 .comments(comments)
                 .build();
@@ -75,20 +75,18 @@ class CommentServiceTest {
     void save() {
         Comment commentBefore = Comment.builder()
                 .body("body")
-                .book(Book.builder().id(1L).build())
                 .build();
 
         Comment commentAfter = Comment.builder()
                 .body("body")
                 .id(1L)
-                .book(Book.builder().id(1L).build())
                 .build();
 
         when(commentDao.save(any()))
                 .thenReturn(commentAfter);
 
 
-        assertThat(commentService.save(commentBefore))
+        assertThat(commentService.save(commentBefore, 1L))
                 .isEqualTo(commentAfter);
         verify(commentDao, times(1)).save(any());
     }
@@ -98,7 +96,6 @@ class CommentServiceTest {
         Comment commentAfter = Comment.builder()
                 .body("body new")
                 .id(1L)
-                .book(Book.builder().id(1L).build())
                 .build();
 
         when(commentDao.getById(commentAfter.getId())).thenReturn(Optional.of(commentAfter));

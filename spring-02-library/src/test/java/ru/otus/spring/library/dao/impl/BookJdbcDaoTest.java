@@ -157,7 +157,7 @@ class BookJdbcDaoTest {
     private Book createExpectedBook() {
         return Book.builder()
                 .id(BOOK_CORRECT_ID)
-                .comments(Set.of())
+                .comments(List.of())
                 .name(EXPECTED_BOOK_NAME)
                 .genre(new Genre(EXPECTED_GENRE_ID, EXPECTED_GENRE_NAME))
                 .authors(Set.of(new Author(EXPECTED_AUTHOR_ID, EXPECTED_AUTHOR_NAME)))
