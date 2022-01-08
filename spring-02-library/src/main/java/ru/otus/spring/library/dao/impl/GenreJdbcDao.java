@@ -1,62 +1,45 @@
 package ru.otus.spring.library.dao.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import ru.otus.spring.library.aop.DaoRepository;
 import ru.otus.spring.library.dao.Dao;
 import ru.otus.spring.library.domain.Genre;
-import ru.otus.spring.library.exception.DomainNotFound;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @DaoRepository
 @RequiredArgsConstructor
-@SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"})
 public class GenreJdbcDao implements Dao<Long, Genre> {
 
-    private final NamedParameterJdbcOperations jdbc;
-    private final RowMapper<Genre> genreMapper;
+    @PersistenceContext
+    private final EntityManager em;
 
     @Override
-    public Genre getById(Long id) {
-        return jdbc.queryForObject(
-                "SELECT id, name FROM genres WHERE id = :id", Map.of("id", id), genreMapper
-        );
+    public Optional<Genre> getById(Long id) {
+        return Optional.ofNullable(em.find(Genre.class, id));
     }
 
     @Override
-    public void updateById(Long id, Genre entity) {
-        int rowCount = jdbc.update("UPDATE genres SET name = :name WHERE id = :id;",
-                Map.of("id", id, "name", entity.getName())
-        );
-        if(rowCount == 0){
-            throw new DomainNotFound(id);
+    public Genre save(Genre entity) {
+        if(entity.getId() == null || entity.getId() == 0){
+            em.persist(entity);
+            return entity;
         }
-    }
-
-    @Override
-    public Long save(Genre entity) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource()
-                .addValue("name", entity.getName());
-        jdbc.update("INSERT INTO genres (name) VALUES :name;", mapSqlParameterSource, keyHolder);
-        return keyHolder.getKey().longValue();
+        return em.merge(entity);
     }
 
     @Override
     public List<Genre> getAll() {
-        return jdbc.query(
-                "SELECT id, name FROM genres", genreMapper
-        );
+        TypedQuery<Genre> query = em.createQuery("SELECT g FROM Genre g", Genre.class);
+        return query.getResultList();
     }
 
     @Override
     public void deleteById(Long id) {
-        jdbc.update("DELETE from genres WHERE id = :id", Map.of("id", id));
+        getById(id).ifPresent(em::remove);
     }
 }

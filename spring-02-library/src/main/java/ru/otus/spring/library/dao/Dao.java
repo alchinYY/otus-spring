@@ -1,14 +1,13 @@
 package ru.otus.spring.library.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface Dao<ID, T> {
 
-    T getById(ID id);
+    Optional<T> getById(ID id);
 
-    void updateById(ID id, T entity);
-
-    ID save(T entity);
+    T save(T entity);
 
     List<T> getAll();
 

@@ -11,6 +11,8 @@ import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Genre;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -39,7 +41,7 @@ class BookServiceTest {
     void getById() {
         Book book = createExpectedBook();
         when(bookDao.getById(anyLong()))
-                .thenReturn(book);
+                .thenReturn(Optional.of(book));
 
         assertThat(bookService.getById(BOOK_CORRECT_ID))
                 .isEqualTo(book);
@@ -64,32 +66,28 @@ class BookServiceTest {
         Book bookAfter = new Book(1L, bookBefore.getName());
 
         when(bookDao.save(any()))
-                .thenReturn(bookAfter.getId());
+                .thenReturn(bookAfter);
 
 
         assertThat(bookService.save(bookBefore))
-                .isEqualTo(bookAfter.getId());
+                .isEqualTo(bookAfter);
         verify(bookDao, times(1)).save(any());
     }
 
     @Test
     void updateById() {
-        Book bookBefore = Book.builder()
-                .name("old book")
-                .id(1)
-                .build();
         Book bookAfter = Book.builder()
                 .name("new book")
-                .id(1)
+                .id(1L)
                 .build();
-        doNothing().when(bookDao)
-                .updateById(bookBefore.getId(), bookAfter);
-        when(bookDao.getById(bookAfter.getId())).thenReturn(bookAfter);
+        when(bookDao.save(bookAfter))
+                .thenReturn(bookAfter);
 
-        assertThat(bookService.updateById(bookBefore.getId(), bookAfter))
+        when(bookDao.getById(bookAfter.getId())).thenReturn(Optional.of(bookAfter));
+
+        assertThat(bookService.updateById(bookAfter.getId(), bookAfter))
                 .isEqualTo(bookAfter);
-        verify(bookDao, times(1)).updateById(any(), any());
-        verify(bookDao, times(1)).getById(any());
+        verify(bookDao, times(1)).save(any());
     }
 
     @Test
@@ -105,7 +103,7 @@ class BookServiceTest {
                 .id(BOOK_CORRECT_ID)
                 .name(EXPECTED_BOOK_NAME)
                 .genre(new Genre(EXPECTED_GENRE_ID, EXPECTED_GENRE_NAME))
-                .authors(List.of(new Author(EXPECTED_AUTHOR_ID, EXPECTED_AUTHOR_NAME)))
+                .authors(Set.of(new Author(EXPECTED_AUTHOR_ID, EXPECTED_AUTHOR_NAME)))
                 .build();
     }
 

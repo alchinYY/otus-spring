@@ -1,23 +1,39 @@
 package ru.otus.spring.library.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
+@EqualsAndHashCode(of = {"id", "name"})
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "books")
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private long id;
+    @Column(name = "name", nullable = false)
     private String name;
-    private List<Author> authors;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "authors_books", joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private Set<Author> authors;
+
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
     private Genre genre;
 
+    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "book_id")
+    @ToString.Exclude
+    private List<Comment> comments;
 
     public Book(long id, String name){
         this.id = id;

@@ -14,7 +14,7 @@ spring:
       mode: always
   jpa:
     show-sql: true
-
+    hibernate.ddl-auto: none
 #  shell:
 #    interactive:
 #      enabled: false
