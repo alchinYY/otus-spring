@@ -1,4 +1,4 @@
-package ru.otus.spring.library.dao.impl;
+package ru.otus.spring.library.repo.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -6,33 +6,27 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.transaction.AfterTransaction;
-import ru.otus.spring.library.aop.AopDaoService;
-import ru.otus.spring.library.dao.Dao;
 import ru.otus.spring.library.domain.Author;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы с авторами должно")
 @DataJpaTest
-@Import({AuthorJdbcDao.class, AopDaoService.class})
-class AuthorJdbcDaoTest {
+class AuthorRepoTest {
 
     private static final int AUTHORS_BEFORE_SIZE = 5;
-    private static final Long AUTHOR_CORRECT_FOR_REMOVE_ID = 5L;
+    private static final long AUTHOR_CORRECT_FOR_REMOVE_ID = 5L;
     private static final String AUTHOR_CORRECT_FOR_REMOVE_NAME = "Неизвестный автор";
     private static final String AUTHOR_CORRECT_NAME = "Толкин, Джон Рональд Руэл";
     private static final Long AUTHOR_CORRECT_ID = 1L;
 
-    private static final Long AUTHOR_NEW_ID = 6L;
+    private static final long AUTHOR_NEW_ID = 6L;
     private static final String AUTHOR_NEW_NAME = "Книжек еще не написал";
 
     @Autowired
-    private Dao<Long, Author> authorDao;
-
-    @Autowired
-    private AopDaoService aopDaoService;
+    private JpaRepository<Author, Long> authorRepository;
 
     @Autowired
     private TestEntityManager em;
@@ -51,7 +45,7 @@ class AuthorJdbcDaoTest {
     void getById() {
         Author authorExpected = new Author(AUTHOR_CORRECT_ID, AUTHOR_CORRECT_NAME);
 
-        assertThat(authorDao.getById(authorExpected.getId()))
+        assertThat(authorRepository.findById(authorExpected.getId()))
                 .isNotEmpty()
                 .get()
                 .isEqualTo(authorExpected);
@@ -60,7 +54,7 @@ class AuthorJdbcDaoTest {
     @Test
     @DisplayName("возвращать пустой ответ, если автора по id нет")
     void getById_idNotFound() {
-        assertThat(authorDao.getById(AUTHOR_NEW_ID))
+        assertThat(authorRepository.findById(AUTHOR_NEW_ID))
                 .isEmpty();
     }
 
@@ -84,10 +78,10 @@ class AuthorJdbcDaoTest {
     void save() {
         Author authorExpected = new Author(AUTHOR_NEW_ID, AUTHOR_NEW_NAME);
 
-        assertThat(authorDao.save(new Author(AUTHOR_NEW_NAME)))
+        assertThat(authorRepository.save(new Author(AUTHOR_NEW_NAME)))
                 .isEqualTo(authorExpected);
 
-        assertThat(authorDao.getAll())
+        assertThat(authorRepository.findAll())
                 .hasSize(AUTHORS_BEFORE_SIZE + 1)
                 .contains(authorExpected);
 
@@ -96,7 +90,7 @@ class AuthorJdbcDaoTest {
     @Test
     @DisplayName("получать всех авторов")
     void getAll() {
-        assertThat(authorDao.getAll())
+        assertThat(authorRepository.findAll())
                 .hasSize(AUTHORS_BEFORE_SIZE)
                 .contains(new Author(AUTHOR_CORRECT_FOR_REMOVE_ID, AUTHOR_CORRECT_FOR_REMOVE_NAME));
     }
@@ -105,13 +99,13 @@ class AuthorJdbcDaoTest {
     @DisplayName("удалять автора по id")
     void deleteById() {
 
-        authorDao.deleteById(AUTHOR_CORRECT_FOR_REMOVE_ID);
+        authorRepository.deleteById(AUTHOR_CORRECT_FOR_REMOVE_ID);
 
-        assertThat(authorDao.getAll())
+        assertThat(authorRepository.findAll())
                 .hasSize(AUTHORS_BEFORE_SIZE - 1)
                 .doesNotContain(new Author(AUTHOR_CORRECT_FOR_REMOVE_ID, AUTHOR_CORRECT_FOR_REMOVE_NAME));
 
-        assertThat(authorDao.getById(AUTHOR_NEW_ID))
+        assertThat(authorRepository.findById(AUTHOR_NEW_ID))
                 .isEmpty();
     }
 }

@@ -3,7 +3,6 @@ package ru.otus.spring.library.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(of = {"id", "name"})
@@ -13,6 +12,14 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "books")
+@NamedEntityGraph(
+        name = "book-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("authors"),
+                @NamedAttributeNode("genre"),
+                @NamedAttributeNode("comments")
+        }
+)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +39,9 @@ public class Book {
 
     @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "book_id")
+    @OrderBy("date ASC")
     @ToString.Exclude
-    private List<Comment> comments;
+    private Set<Comment> comments;
 
     public Book(long id, String name){
         this.id = id;

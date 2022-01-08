@@ -6,14 +6,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
-import ru.otus.spring.library.dao.impl.CommentsJdbcDao;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Comment;
+import ru.otus.spring.library.repo.CommentRepo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -33,34 +30,34 @@ class CommentServiceTest {
     private BookService bookService;
 
     @MockBean
-    private CommentsJdbcDao commentDao;
+    private CommentRepo commentRepository;
 
     @Test
     void getById() {
         Comment comment = mock(Comment.class);
-        when(commentDao.getById(anyLong())).thenReturn(Optional.of(comment));
+        when(commentRepository.findById(anyLong())).thenReturn(Optional.of(comment));
 
         assertThat(commentService.getById(COMMENT_ID))
                 .isEqualTo(comment);
 
-        verify(commentDao, times(1)).getById(anyLong());
+        verify(commentRepository, times(1)).findById(anyLong());
 
     }
 
     @Test
     void getAll() {
         List<Comment> commentList = List.of(mock(Comment.class));
-        when(commentDao.getAll()).thenReturn(commentList);
+        when(commentRepository.findAll()).thenReturn(commentList);
 
         assertThat(commentService.getAll())
                 .isEqualTo(commentList);
 
-        verify(commentDao, times(1)).getAll();
+        verify(commentRepository, times(1)).findAll();
     }
 
     @Test
     void getAllByBookId() {
-        List<Comment> comments = List.of(mock(Comment.class));
+        Set<Comment> comments = Set.of(mock(Comment.class));
         Book book = Book.builder()
                 .comments(comments)
                 .build();
@@ -83,11 +80,11 @@ class CommentServiceTest {
                 .id(1L)
                 .build();
 
-        when(commentDao.save(any()))
+        when(commentRepository.save(any()))
                 .thenReturn(commentAfter);
 
         Book book = new Book();
-        book.setComments(new ArrayList<>());
+        book.setComments(new HashSet<>());
         when(bookService.getById(anyLong()))
                 .thenReturn(book);
         commentBefore.setId(commentAfter.getId());
@@ -103,7 +100,7 @@ class CommentServiceTest {
                 .id(1L)
                 .build();
 
-        when(commentDao.getById(commentAfter.getId())).thenReturn(Optional.of(commentAfter));
+        when(commentRepository.findById(commentAfter.getId())).thenReturn(Optional.of(commentAfter));
 
         assertThat(commentService.updateById(commentAfter.getId(), commentAfter))
                 .isEqualTo(commentAfter);
@@ -111,8 +108,8 @@ class CommentServiceTest {
 
     @Test
     void deleteById() {
-        doNothing().when(commentDao).deleteById(anyLong());
+        doNothing().when(commentRepository).deleteById(anyLong());
         commentService.deleteById(COMMENT_ID);
-        verify(commentDao, times(1)).deleteById(any());
+        verify(commentRepository, times(1)).deleteById(any());
     }
 }
