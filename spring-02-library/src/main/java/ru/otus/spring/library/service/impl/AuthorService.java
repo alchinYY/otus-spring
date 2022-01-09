@@ -28,7 +28,6 @@ public class AuthorService implements EntityService<Author> {
     }
 
     @Override
-    @Transactional
     public Author save(Author author){
         return authorRepository.save(author);
     }
@@ -42,7 +41,6 @@ public class AuthorService implements EntityService<Author> {
     }
 
     @Override
-    @Transactional
     public void deleteById(Long id){
         authorRepository.deleteById(id);
     }

@@ -28,7 +28,6 @@ public class BookService implements EntityService<Book> {
     }
 
     @Override
-    @Transactional
     public Book save(Book book){
         return bookRepository.save(book);
     }
@@ -36,12 +35,14 @@ public class BookService implements EntityService<Book> {
     @Override
     @Transactional
     public Book updateById(Long bookId, Book book){
-        book.setId(bookId);
-        return bookRepository.save(book);
+        Book fromDb = getById(bookId);
+        fromDb.setName(book.getName());
+        fromDb.setGenre(book.getGenre());
+        fromDb.setAuthors(book.getAuthors());
+        return fromDb;
     }
 
     @Override
-    @Transactional
     public void deleteById(Long id){
         bookRepository.deleteById(id);
     }

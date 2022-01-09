@@ -27,7 +27,6 @@ public class GenreService implements EntityService<Genre> {
     }
 
     @Override
-    @Transactional
     public Genre save(Genre genre){
         return genreRepository.save(genre);
     }
@@ -41,7 +40,6 @@ public class GenreService implements EntityService<Genre> {
     }
 
     @Override
-    @Transactional
     public void deleteById(Long id){
         genreRepository.deleteById(id);
     }

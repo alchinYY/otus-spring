@@ -87,7 +87,7 @@ class BookServiceTest {
 
         assertThat(bookService.updateById(bookAfter.getId(), bookAfter))
                 .isEqualTo(bookAfter);
-        verify(bookRepository, times(1)).save(any());
+        verify(bookRepository, times(1)).findById(any());
     }
 
     @Test

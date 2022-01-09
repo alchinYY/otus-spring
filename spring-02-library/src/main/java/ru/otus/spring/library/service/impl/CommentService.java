@@ -46,7 +46,6 @@ public class CommentService {
         return commentFromDb;
     }
 
-    @Transactional
     public void deleteById(Long id) {
         commentRepository.deleteById(id);
     }
