@@ -26,7 +26,6 @@ public class CommentService {
         return commentRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
     public Set<Comment> getAllByBookId(Long id) {
         return bookService.getById(id).getComments();
     }
