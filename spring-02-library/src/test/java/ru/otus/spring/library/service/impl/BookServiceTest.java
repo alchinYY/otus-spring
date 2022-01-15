@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import ru.otus.spring.library.dao.Dao;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Genre;
+import ru.otus.spring.library.repo.BookRepo;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +32,7 @@ class BookServiceTest {
 
 
     @MockBean
-    private Dao<Long, Book> bookDao;
+    private BookRepo bookRepository;
 
     @Autowired
     private BookService bookService;
@@ -40,22 +40,22 @@ class BookServiceTest {
     @Test
     void getById() {
         Book book = createExpectedBook();
-        when(bookDao.getById(anyLong()))
+        when(bookRepository.findById(anyLong()))
                 .thenReturn(Optional.of(book));
 
         assertThat(bookService.getById(BOOK_CORRECT_ID))
                 .isEqualTo(book);
-        verify(bookDao, times(1)).getById(anyLong());
+        verify(bookRepository, times(1)).findById(anyLong());
     }
 
     @Test
     void getAll() {
-        when(bookDao.getAll())
+        when(bookRepository.findAll())
                 .thenReturn(List.of(new Book(), new Book()));
 
         assertThat(bookService.getAll())
                 .hasSize(2);
-        verify(bookDao, times(1)).getAll();
+        verify(bookRepository, times(1)).findAll();
     }
 
     @Test
@@ -65,13 +65,13 @@ class BookServiceTest {
                 .build();
         Book bookAfter = new Book(1L, bookBefore.getName());
 
-        when(bookDao.save(any()))
+        when(bookRepository.save(any()))
                 .thenReturn(bookAfter);
 
 
         assertThat(bookService.save(bookBefore))
                 .isEqualTo(bookAfter);
-        verify(bookDao, times(1)).save(any());
+        verify(bookRepository, times(1)).save(any());
     }
 
     @Test
@@ -80,21 +80,21 @@ class BookServiceTest {
                 .name("new book")
                 .id(1L)
                 .build();
-        when(bookDao.save(bookAfter))
+        when(bookRepository.save(bookAfter))
                 .thenReturn(bookAfter);
 
-        when(bookDao.getById(bookAfter.getId())).thenReturn(Optional.of(bookAfter));
+        when(bookRepository.findById(bookAfter.getId())).thenReturn(Optional.of(bookAfter));
 
         assertThat(bookService.updateById(bookAfter.getId(), bookAfter))
                 .isEqualTo(bookAfter);
-        verify(bookDao, times(1)).save(any());
+        verify(bookRepository, times(1)).findById(any());
     }
 
     @Test
     void deleteById() {
-        doNothing().when(bookDao).deleteById(anyLong());
+        doNothing().when(bookRepository).deleteById(anyLong());
         bookService.deleteById(BOOK_CORRECT_ID);
-        verify(bookDao, times(1)).deleteById(any());
+        verify(bookRepository, times(1)).deleteById(any());
     }
 
 

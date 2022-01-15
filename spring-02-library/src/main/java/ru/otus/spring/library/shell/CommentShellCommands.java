@@ -8,6 +8,7 @@ import ru.otus.spring.library.domain.Comment;
 import ru.otus.spring.library.service.impl.CommentService;
 
 import java.util.List;
+import java.util.Set;
 
 @ShellComponent
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class CommentShellCommands {
     }
 
     @ShellMethod(value = "Work with comment, by book id", key = {CMD_KEY + "book"})
-    public List<Comment> getAllByBookIdCmd(Long id){
+    public Set<Comment> getAllByBookIdCmd(Long id){
         return service.getAllByBookId(id);
     }
 

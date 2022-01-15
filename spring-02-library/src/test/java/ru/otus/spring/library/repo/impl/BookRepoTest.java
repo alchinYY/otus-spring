@@ -1,54 +1,47 @@
-package ru.otus.spring.library.dao.impl;
+package ru.otus.spring.library.repo.impl;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
-import ru.otus.spring.library.aop.AopDaoService;
-import ru.otus.spring.library.dao.Dao;
 import ru.otus.spring.library.domain.Author;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Genre;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы с книгами должно")
 @DataJpaTest
-@Import({BookJdbcDao.class, AopDaoService.class})
-class BookJdbcDaoTest {
+class BookRepoTest {
 
-    private static final Long BOOK_CORRECT_ID = 2L;
-    private static final Long BOOK_NOT_CORRECT_ID = 100L;
-    private static final Long BOOK_AFTER_SAVE_ID = 5L;
+    private static final long BOOK_CORRECT_ID = 2L;
+    private static final long BOOK_NOT_CORRECT_ID = 100L;
+    private static final long BOOK_AFTER_SAVE_ID = 5L;
 
     private static final String EXPECTED_BOOK_NAME = "Властелин колец: братство кольца";
     private static final String EXPECTED_BOOK_NAME_UPD = "Властелин колец: возвращение короля";
     private static final String EXPECTED_GENRE_NAME = "роман-эпопея";
-    private static final Long EXPECTED_GENRE_ID = 1L;
+    private static final long EXPECTED_GENRE_ID = 1L;
 
     private static final String EXPECTED_AUTHOR_NAME = "Толкин, Джон Рональд Руэл";
-    private static final Long EXPECTED_AUTHOR_ID = 1L;
+    private static final long EXPECTED_AUTHOR_ID = 1L;
 
     private static final String EXPECTED_GENRE_NAME_UPD = "сказка";
-    private static final Long EXPECTED_GENRE_ID_UPD = 2L;
+    private static final long EXPECTED_GENRE_ID_UPD = 2L;
     private static final String EXPECTED_AUTHOR_NAME_UPD = "Пушкин Александр Сергеевич";
-    private static final Long EXPECTED_AUTHOR_ID_UPD = 2L;
+    private static final long EXPECTED_AUTHOR_ID_UPD = 2L;
     private static final String EXPECTED_AUTHOR_NAME_UPD_2 = "Стругацкий Аркадий";
-    private static final Long EXPECTED_AUTHOR_ID_UPD_2 = 3L;
+    private static final long EXPECTED_AUTHOR_ID_UPD_2 = 3L;
 
 
     @Autowired
-    private Dao<Long, Book> bookJdbcDao;
-
-    @Autowired
-    private AopDaoService aopDaoService;
+    private JpaRepository<Book, Long> bookRepository;
 
     @Autowired
     private TestEntityManager em;
@@ -66,7 +59,7 @@ class BookJdbcDaoTest {
     @Test
     @DisplayName("возвращать ожидаемую книгу по id")
     void getById() {
-        assertThat(bookJdbcDao.getById(BOOK_CORRECT_ID))
+        assertThat(bookRepository.findById(BOOK_CORRECT_ID))
                 .isPresent()
                 .get()
                 .isEqualTo(createExpectedBook());
@@ -75,7 +68,7 @@ class BookJdbcDaoTest {
     @Test
     @DisplayName("возвращать isEmpty, если книги с заданным id нет")
     void getById_bookNotFound() {
-        assertThat(bookJdbcDao.getById(BOOK_NOT_CORRECT_ID))
+        assertThat(bookRepository.findById(BOOK_NOT_CORRECT_ID))
                 .isEmpty();
     }
 
@@ -94,7 +87,7 @@ class BookJdbcDaoTest {
         Book bookForUpdate = createBookAfterUpdate(EXPECTED_GENRE_ID_UPD, EXPECTED_GENRE_NAME_UPD);
         bookForUpdate.setId(BOOK_CORRECT_ID);
 
-        bookJdbcDao.save(bookForUpdate);
+        bookRepository.save(bookForUpdate);
 
         assertThat(em.find(Book.class, BOOK_CORRECT_ID))
                 .isEqualTo(bookExpected);
@@ -115,7 +108,7 @@ class BookJdbcDaoTest {
                 .build();
 
         Book bookForSave = createBookAfterUpdate(EXPECTED_GENRE_ID_UPD, EXPECTED_GENRE_NAME_UPD);
-        Book afterSave = bookJdbcDao.save(bookForSave);
+        Book afterSave = bookRepository.save(bookForSave);
 
         Book bookActual = em.find(Book.class, afterSave.getId());
         assertThat(bookActual)
@@ -125,7 +118,7 @@ class BookJdbcDaoTest {
     @Test
     @DisplayName("возвращать ожидаемый список книг")
     void getAll() {
-        assertThat(bookJdbcDao.getAll())
+        assertThat(bookRepository.findAll())
                 .hasSize(4)
                 .contains(createExpectedBook());
     }
@@ -133,13 +126,13 @@ class BookJdbcDaoTest {
     @Test
     @DisplayName("удалять заданною книгу по ее id")
     void deleteById() {
-        bookJdbcDao.deleteById(BOOK_CORRECT_ID);
+        bookRepository.deleteById(BOOK_CORRECT_ID);
 
-        assertThat(bookJdbcDao.getAll())
+        assertThat(bookRepository.findAll())
                 .hasSize(3)
                 .doesNotContain(createExpectedBook());
 
-        assertThat(bookJdbcDao.getById(BOOK_CORRECT_ID))
+        assertThat(bookRepository.findById(BOOK_CORRECT_ID))
                 .isEmpty();
     }
 
@@ -157,7 +150,7 @@ class BookJdbcDaoTest {
     private Book createExpectedBook() {
         return Book.builder()
                 .id(BOOK_CORRECT_ID)
-                .comments(List.of())
+                .comments(Set.of())
                 .name(EXPECTED_BOOK_NAME)
                 .genre(new Genre(EXPECTED_GENRE_ID, EXPECTED_GENRE_NAME))
                 .authors(Set.of(new Author(EXPECTED_AUTHOR_ID, EXPECTED_AUTHOR_NAME)))

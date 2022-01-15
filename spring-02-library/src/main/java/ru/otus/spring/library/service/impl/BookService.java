@@ -1,9 +1,9 @@
 package ru.otus.spring.library.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.spring.library.dao.Dao;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.exception.DomainNotFound;
 import ru.otus.spring.library.service.EntityService;
@@ -14,36 +14,37 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookService implements EntityService<Book> {
 
-    private final Dao<Long, Book> bookDao;
+    private final JpaRepository<Book, Long> bookRepository;
 
     @Override
     public Book getById(long id){
-        return bookDao.getById(id)
+        return bookRepository.findById(id)
                 .orElseThrow(() -> new DomainNotFound("book"));
     }
 
     @Override
     public List<Book> getAll(){
-        return bookDao.getAll();
+        return bookRepository.findAll();
     }
 
     @Override
-    @Transactional
     public Book save(Book book){
-        return bookDao.save(book);
+        return bookRepository.save(book);
     }
 
     @Override
     @Transactional
     public Book updateById(Long bookId, Book book){
-        book.setId(bookId);
-        return bookDao.save(book);
+        Book fromDb = getById(bookId);
+        fromDb.setName(book.getName());
+        fromDb.setGenre(book.getGenre());
+        fromDb.setAuthors(book.getAuthors());
+        return fromDb;
     }
 
     @Override
-    @Transactional
     public void deleteById(Long id){
-        bookDao.deleteById(id);
+        bookRepository.deleteById(id);
     }
 
 }

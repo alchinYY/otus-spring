@@ -1,4 +1,4 @@
-package ru.otus.spring.library.dao.impl;
+package ru.otus.spring.library.repo.impl;
 
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.DisplayName;
@@ -6,11 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
-import ru.otus.spring.library.aop.AopDaoService;
-import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Comment;
 
 import java.time.LocalDateTime;
@@ -20,8 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы с комментами должно")
 @DataJpaTest
-@Import({CommentsJdbcDao.class, AopDaoService.class})
-class CommentsJdbcDaoTest {
+class CommentRepoTest {
 
     private static final int COMMENTS_BEFORE_SIZE = 4;
     private static final LocalDateTime COMMENT_CORRECT_DATE = LocalDateTime.parse("2015-12-18T17:53:02.594");
@@ -31,10 +28,8 @@ class CommentsJdbcDaoTest {
     private static final Long COMMENT_NEW_ID = 5L;
     private static final String COMMENT_NEW_BODY = "Книжек еще не написал";
 
-    private static final Long BOOK_CORRECT_ID = 2L;
-
     @Autowired
-    private CommentsJdbcDao commentsJdbcDao;
+    private JpaRepository<Comment, Long> commentsRepository;
 
     @Autowired
     private TestEntityManager em;
@@ -58,7 +53,7 @@ class CommentsJdbcDaoTest {
                 .date(COMMENT_CORRECT_DATE)
                 .build();
 
-        assertThat(commentsJdbcDao.getById(commentExpected.getId()))
+        assertThat(commentsRepository.findById(commentExpected.getId()))
                 .isNotEmpty()
                 .get()
                 .isEqualTo(commentExpected);
@@ -73,7 +68,7 @@ class CommentsJdbcDaoTest {
                 .body(COMMENT_CORRECT_BODY)
                 .build();
 
-        commentsJdbcDao.save(comment);
+        commentsRepository.save(comment);
         Comment authorAfterUpdate = em.find(Comment.class, COMMENT_CORRECT_ID);
 
         assertThat(authorAfterUpdate)
@@ -90,7 +85,7 @@ class CommentsJdbcDaoTest {
                 .build();
 
 
-        assertThat(commentsJdbcDao.save(new Comment(COMMENT_NEW_BODY)))
+        assertThat(commentsRepository.save(new Comment(COMMENT_NEW_BODY)))
                 .hasFieldOrPropertyWithValue("body", commentExpected.getBody())
                 .hasFieldOrPropertyWithValue("id", commentExpected.getId())
                 .hasNoNullFieldsOrPropertiesExcept("date");
@@ -104,7 +99,7 @@ class CommentsJdbcDaoTest {
         sessionFactory.getStatistics().setStatisticsEnabled(true);
 
         System.out.println("\n\n\n\n----------------------------------------------------------------------------------------------------------");
-        List<Comment> comments = commentsJdbcDao.getAll();
+        List<Comment> comments = commentsRepository.findAll();
         assertThat(comments).isNotNull().hasSize(COMMENTS_BEFORE_SIZE)
                 .allMatch(c -> !c.getBody().equals(""))
                 .allMatch(c -> c.getDate() != null);
@@ -116,12 +111,12 @@ class CommentsJdbcDaoTest {
     @DisplayName("удалять комментарий")
     void deleteById() {
 
-        commentsJdbcDao.deleteById(COMMENT_CORRECT_ID);
+        commentsRepository.deleteById(COMMENT_CORRECT_ID);
 
-        assertThat(commentsJdbcDao.getAll())
+        assertThat(commentsRepository.findAll())
                 .hasSize(COMMENTS_BEFORE_SIZE - 1);
 
-        assertThat(commentsJdbcDao.getById(COMMENT_CORRECT_ID))
+        assertThat(commentsRepository.findById(COMMENT_CORRECT_ID))
                 .isEmpty();
     }
 }
