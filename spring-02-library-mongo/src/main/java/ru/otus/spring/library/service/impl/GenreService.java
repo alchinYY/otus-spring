@@ -6,7 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.library.domain.Genre;
 import ru.otus.spring.library.exception.DomainNotFound;
-import ru.otus.spring.library.repo.BookRepository;
 import ru.otus.spring.library.service.EntityService;
 import ru.otus.spring.library.service.SequenceGeneratorService;
 
@@ -17,8 +16,7 @@ import java.util.List;
 public class GenreService implements EntityService<Genre> {
 
     private final CrudRepository<Genre, Integer> genreRepository;
-    private final BookRepository bookRepository;
-    private final SequenceGeneratorService sequenceGeneratorService;
+    private final SequenceGeneratorService<Integer> sequenceGeneratorService;
 
     @Override
     public Genre getById(int id) {

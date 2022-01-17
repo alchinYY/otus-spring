@@ -10,13 +10,16 @@ import ru.otus.spring.library.service.EntityService;
 import ru.otus.spring.library.service.SequenceGeneratorService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BookService implements EntityService<Book> {
 
     private final CrudRepository<Book, Integer> bookRepository;
-    private final SequenceGeneratorService sequenceGeneratorService;
+    private final SequenceGeneratorService<Integer> sequenceGeneratorService;
+    private final GenreService genreService;
+    private final AuthorService authorService;
 
     @Override
     public Book getById(int id){
@@ -32,6 +35,14 @@ public class BookService implements EntityService<Book> {
     @Override
     public Book save(Book book){
         book.setId(sequenceGeneratorService.generateSequence(Book.SEQUENCE_NAME));
+
+        book.setGenre(genreService.getById(book.getGenre().getId()));
+        book.setAuthors(
+                book.getAuthors().stream()
+                        .map(a -> authorService.getById(a.getId()))
+                        .collect(Collectors.toList())
+        );
+
         return bookRepository.save(book);
     }
 

@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      database: library_test
+  main:
+    allow-circular-references: true
+  mongodb:
+    embedded:
+      version: 3.5.5
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.spring.library.mongock.changelog.test

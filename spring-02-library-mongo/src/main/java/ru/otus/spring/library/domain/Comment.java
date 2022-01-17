@@ -45,6 +45,11 @@ public class Comment implements AbstractDomain, Persistable<Integer> {
         this.body = body;
     }
 
+    public Comment(int id, String body) {
+        this.body = body;
+        this.id = id;
+    }
+
     @Override
     public boolean isNew() {
         return date == null;

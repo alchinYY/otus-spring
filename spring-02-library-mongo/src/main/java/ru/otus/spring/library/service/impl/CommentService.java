@@ -17,7 +17,7 @@ public class CommentService {
 
     private final CrudRepository<Comment, Integer> commentRepository;
     private final BookService bookService;
-    private final SequenceGeneratorService sequenceGeneratorService;
+    private final SequenceGeneratorService<Integer> sequenceGeneratorService;
 
     public Comment getById(int id) {
         return commentRepository.findById(id)

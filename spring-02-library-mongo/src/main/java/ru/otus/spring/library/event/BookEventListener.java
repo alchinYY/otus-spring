@@ -24,6 +24,5 @@ public class BookEventListener extends AbstractMongoEventListener<Book> {
                     super.onBeforeDelete(event);
                 }
         );
-
     }
 }

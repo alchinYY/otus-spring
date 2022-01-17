@@ -16,7 +16,7 @@ import java.util.List;
 public class AuthorService implements EntityService<Author> {
 
     private final CrudRepository<Author, Integer> authorRepository;
-    private final SequenceGeneratorService sequenceGeneratorService;
+    private final SequenceGeneratorService<Integer> sequenceGeneratorService;
 
 
     @Override
