@@ -26,6 +26,8 @@ public class Comment {
     @Column(name = "body", nullable = false, length = 500)
     private String body;
 
+
+
     public Comment(String body){
         this.body = body;
     }
