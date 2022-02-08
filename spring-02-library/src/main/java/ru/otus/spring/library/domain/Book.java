@@ -39,7 +39,6 @@ public class Book {
 
     @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "book_id")
-//    @OrderBy("date ASC")
     @ToString.Exclude
     private Set<Comment> comments;
 
