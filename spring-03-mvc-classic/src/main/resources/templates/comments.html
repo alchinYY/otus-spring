@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all books</title>
+    <link rel="stylesheet" type="text/css" media="all" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+</head>
+<body>
+
+<h3 th:text="#{comment-label} + ${book.name}">Books: first book</h3>
+
+<table class="book-table">
+    <thead>
+    <tr>
+        <th th:text="#{comment-table-header-date}">Date</th>
+        <th th:text="#{comment-table-header-body}">Text</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${commentsList}">
+        <td th:text="${comment.date}">2020.03.03</td>
+        <td th:text="${comment.body}">test comment</td>
+    </tbody>
+</table>
+
+<!-- Put comment -->
+<form id="edit-form" action="comments.html" th:action="@{/library/book/{bookId}/comments(bookId=${book.id})}" th:method="post" th:object="${newComment}">
+
+    <div class="row">
+        <label for="body-input" th:text="#{comment-label-input}">Body</label>
+        <br>
+        <textarea id="body-input" type="text" th:field="*{body}" value=""></textarea>
+    </div>
+
+    <div class="row">
+        <button type="submit" th:text="#{save-button-caption}">Save</button>
+        <a href="books.html" th:href="@{/}"><button type="button" th:text="#{cancel-button-caption}">To Books</button></a>
+    </div>
+</form>
+
+</body>
+</html>

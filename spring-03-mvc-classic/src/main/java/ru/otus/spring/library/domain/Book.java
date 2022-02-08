@@ -3,6 +3,8 @@ package ru.otus.spring.library.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(of = {"id", "name"})
@@ -39,9 +41,8 @@ public class Book {
 
     @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "book_id")
-//    @OrderBy("date ASC")
     @ToString.Exclude
-    private Set<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     public Book(long id, String name){
         this.id = id;
