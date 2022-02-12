@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all books</title>
+    <link rel="stylesheet" type="text/css" media="all" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+</head>
+<body>
+
+<h3 th:text="Error">error</h3>
+
+<table class="book-table">
+    <thead>
+    <tr>
+        <th th:text="#{comment-table-header-body}">Text</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="error : ${errors}">
+        <td>
+            <div class="errors" th:text="${error.defaultMessage}">Wrong person name error</div>
+        </td>
+    </tbody>
+</table>
+
+<a href="books.html" th:href="@{/}"><button type="button" th:text="#{cancel-button-caption}">To Books</button></a>
+
+</body>
+</html>

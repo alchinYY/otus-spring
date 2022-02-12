@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all books</title>
+    <link rel="stylesheet" type="text/css" media="all" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+</head>
+<body>
+
+<h3 th:text="#{lang-switcher-header}">Select language</h3>
+<div>
+    <div><a href="#" th:href="@{/(lang=en)}" th:text="#{en-lang-switch-button-caption}">Language - EN</a></div>
+    <div><a href="#" th:href="@{/(lang=ru)}" th:text="#{ru-lang-switch-button-caption}">Language - RU</a></div>
+</div>
+<h3 th:text="#{books-label}">Books:</h3>
+
+<table class="book-table">
+    <thead>
+    <tr>
+        <th th:text="#{book-table-header-id}">ID</th>
+        <th th:text="#{book-table-header-name}">Name</th>
+        <th th:text="#{book-table-header-genre-name}">Genre</th>
+        <th th:text="#{book-table-header-authors-names}">Authors</th>
+        <th th:text="#{book-table-header-redaction}">Redaction</th>
+        <th th:text="#{book-table-header-comments}">Comments</th>
+        <th th:text="#{book-table-header-delete}">Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}">1</td>
+        <td th:text="${book.name}">John Doe</td>
+        <td th:text="${book.genre.name}">roman</td>
+        <td>
+            <table class="authors">
+                <tr th:each="author : ${book.authors}">
+                    <td th:text="${author.name}">Pushkin</td>
+                </tr>
+            </table>
+        </td>
+        <td>
+            <a th:href="@{/library/book/{bookId}(bookId=${book.id})}" href="update-book.html" th:text="#{edit-button-caption}">Edit</a>
+        </td>
+        <td>
+            <a class="comment-btn" th:class="comment-btn"
+               th:href="@{/library/book/{bookId}/comments(bookId=${book.id})}" href="comments.html">
+                <img th:src="@{/images/comment.png}" src='../static/images/comment.png' alt=""/>
+            </a>
+        </td>
+        <td>
+            <form id="delete-form" action="books.html" th:action="@{/library/book/delete(id=${book.id})}"
+                  th:method="post">
+                <button type="submit" class="remover">
+                    <img th:src="@{/images/delete.png}" src="../static/images/delete.png" alt=""/>
+                </button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<label th:text="#{add-button-caption}" for="add-book-href">Add new book</label>
+<a id="add-book-href" href="create-book.html" th:href="@{/library/book/create}" class="btn-add-book"
+   th:class="btn-add-book">
+    <img th:src="@{/images/add.png}" src="../static/images/add.png" alt=""/>
+</a>
+</body>
+</html>

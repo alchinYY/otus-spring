@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Create book</title>
+    <link rel="stylesheet" type="text/css" media="all" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+</head>
+<body>
+
+<form id="create-form" action="create-book.html" th:action="@{/library/book/create}" th:method="post"
+      th:object="${book}">
+    <h3 th:text="#{book-form-header}">Book Info:</h3>
+
+    <div class="row">
+        <label for="book-name-input">Name:</label>
+        <input id="book-name-input" name="name" type="text" th:value="*{name}" value="Book name"/>
+        <div class="errors" th:if="${#fields.hasErrors('name')}">
+            <p th:each="err : ${#fields.errors('name')}" th:errors="*{name}"></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="genre-list">
+            <label for="genres">Genre:</label>
+            <select class="form-control" th:field="*{genre.id}" id="genres">
+                <option value="0">select genre</option>
+                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}">Genre</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <table>
+            <thead>
+            <tr>
+                <th>Author</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="author : ${authors}">
+                <td>
+                    <input type="checkbox"
+                           th:name="authorsIds" th:value="${author.id}"/>
+                </td>
+                <td th:text="${author.name}">Author 1</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row">
+        <button type="submit" th:text="#{save-button-caption}">Save</button>
+        <a href="books.html" th:href="@{/}">
+            <button type="button" th:text="#{cancel-button-caption}">Cancel</button>
+        </a>
+    </div>
+
+</form>
+
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-12-16--0004-authors_books
+      author: alchinYY
+      preConditions:
+        - tableExists:
+            tableName: books
+        - tableExists:
+            tableName: authors
+        - tableExists:
+            tableName: authors_books
+      loadUpdateData:
+        - tableName: authors_books
+          primaryKey: book_id,author_id
+          relativeToChangelogFile: true
+          file: /data/test--0004-authors_books.csv
