@@ -10,7 +10,7 @@ public interface EntityService<T> {
 
     T save(T genre);
 
-    T updateById(Long id, T genre);
+    T updateById(Long id, T entity);
 
     void deleteById(Long id);
 }
