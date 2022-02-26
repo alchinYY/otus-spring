@@ -19,7 +19,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 @RequiredArgsConstructor
 public class GenreController {
 
-    private static final String GENRE_URL = "/library/genre";
+    static final String GENRE_URL = "/library/genre";
 
     private final GenreRepository genreRepository;
     private final ModelMapper modelMapper;
@@ -31,10 +31,7 @@ public class GenreController {
                         response -> genreRepository.findAll()
                                 .map(g -> modelMapper.map(g, GenreDto.class))
                                 .collectList()
-                                .flatMap(genres -> ok()
-                                                .contentType(APPLICATION_JSON)
-                                                .body(fromValue(genres))
-                                )
+                                .flatMap(genres -> ok().contentType(APPLICATION_JSON).body(fromValue(genres)))
                 )
                 .build();
     }

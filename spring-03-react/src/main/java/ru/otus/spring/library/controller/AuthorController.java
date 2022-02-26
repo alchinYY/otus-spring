@@ -19,7 +19,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 @RequiredArgsConstructor
 public class AuthorController {
 
-    private static final String AUTHOR_URL = "/library/author";
+    static final String AUTHOR_URL = "/library/author";
 
     private final AuthorRepository authorRepository;
     private final ModelMapper modelMapper;

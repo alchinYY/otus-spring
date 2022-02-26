@@ -1,22 +1,19 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
-    #initialization-mode: always
-    #data: data.sql
-  liquibase:
-    enabled: true
-    change-log: classpath:/db/changelog/db.changelog-master-test.yaml
-  sql:
-    init:
-      mode: always
+  output:
+    ansi:
+      enabled: ALWAYS
 
-  jpa:
-    properties:
-      hibernate:
-        format_sql: true
-    show-sql: true
-    hibernate.ddl-auto: none
+  messages:
+    encoding: UTF-8
+  data:
+    mongodb:
+      database: library_test
+    main:
+      allow-circular-references: true
+  mongodb:
+    embedded:
+      version: 3.5.5
 
   main:
     allow-bean-definition-overriding: true
-
+server.error.include-message: always

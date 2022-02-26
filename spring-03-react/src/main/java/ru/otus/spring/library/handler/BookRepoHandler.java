@@ -12,7 +12,6 @@ import ru.otus.spring.library.repository.AuthorRepository;
 import ru.otus.spring.library.repository.BookRepository;
 import ru.otus.spring.library.repository.GenreRepository;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,8 +30,6 @@ public class BookRepoHandler {
                 .flatMap(this::toDto)
                 .collectList();
     }
-
-
 
     public Mono<Void> delete(String id) {
         return bookRepository.deleteById(id);

@@ -1,4 +1,8 @@
 spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+
   messages:
     encoding: UTF-8
   data:

@@ -14,6 +14,13 @@
 	<name>library</name>
 	<description>library</description>
 
+	<properties>
+		<java.version>11</java.version>
+		<log4j2>2.15.1</log4j2>
+		<model-mapper.version>2.4.5</model-mapper.version>
+	</properties>
+
+
 	<dependencies>
 		<!-- Зависимости WebFlux -->
 		<dependency>

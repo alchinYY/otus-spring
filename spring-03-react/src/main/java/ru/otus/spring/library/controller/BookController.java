@@ -20,7 +20,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.st
 @RequiredArgsConstructor
 public class BookController {
 
-    private static final String BOOK_URL = "/library/book";
+    static final String BOOK_URL = "/library/book";
 
     private final BookRepoHandler bookHandler;
 
@@ -31,12 +31,10 @@ public class BookController {
                         request -> bookHandler.getAllDto()
                                 .flatMap(books -> ok().contentType(APPLICATION_JSON).body(fromValue(books)))
                 )
-
                 .DELETE(BOOK_URL + "/{id}", accept(APPLICATION_JSON),
                         request -> bookHandler.delete(request.pathVariable("id"))
                                 .flatMap(nothing -> ok().contentType(APPLICATION_JSON).build())
                 )
-
                 .POST(BOOK_URL, accept(APPLICATION_JSON),
                         request -> request.bodyToMono(BookDto.class)
                                 .flatMap(bookHandler::save)
