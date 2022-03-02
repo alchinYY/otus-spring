@@ -1,0 +1,19 @@
+spring:
+  output:
+    ansi:
+      enabled: ALWAYS
+
+  messages:
+    encoding: UTF-8
+  data:
+    mongodb:
+      database: library_test
+    main:
+      allow-circular-references: true
+  mongodb:
+    embedded:
+      version: 3.5.5
+
+  main:
+    allow-bean-definition-overriding: true
+server.error.include-message: always
