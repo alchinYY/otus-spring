@@ -31,7 +31,6 @@ public class BookDtoToEntityMapper extends PropertyMap<BookDto, Book> {
         Converter<List<AuthorDto>, Set<Author>> converterAuthor = new AbstractConverter<>() {
             @Override
             protected Set<Author> convert(List<AuthorDto> source) {
-                System.out.println(source);
                 return Optional.ofNullable(source).map(authors -> authors.stream().map(a -> new Author(a.getId(), a.getName())).collect(Collectors.toSet()))
                         .orElse(null);
             }
