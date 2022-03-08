@@ -1,0 +1,4 @@
+id,login,password,expired,locked,cred_expired,enabled
+1,user1,$2a$12$RXD8RqTr45KeRrVUvyEoR.ovB.yMUwftnOLMPg4VUTfiM5Rbl9o2C,f,f,f,t
+2,user2,$2a$12$yVRZ4PuO3y2D2eB4uRQvQOSO5GaG9hQBZSeMiZRq.V9yPJo2hm7wG,t,f,f,t
+3,user3,$2a$12$8gVAKLqJGR0SrtmZ6lsAuO5pquYTs3bzSB4/jmXbeYZlOkLFaSn4W,f,t,f,t
