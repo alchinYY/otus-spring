@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-03-02--0006-comments
+      author: alchinYY
+      preConditions:
+        - tableExists:
+            tableName: users
+      loadUpdateData:
+        - tableName: users
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: /data/test--0006-users.csv

@@ -1,0 +1,4 @@
+id,login,password,cred_expired,locked,expiration_date,enabled
+1,user1,$2a$12$RXD8RqTr45KeRrVUvyEoR.ovB.yMUwftnOLMPg4VUTfiM5Rbl9o2C,f,f,2023-01-01 00:00:00,t
+2,user2,$2a$12$yVRZ4PuO3y2D2eB4uRQvQOSO5GaG9hQBZSeMiZRq.V9yPJo2hm7wG,f,f,2021-01-01 00:00:00,t
+3,user3,$2a$12$8gVAKLqJGR0SrtmZ6lsAuO5pquYTs3bzSB4/jmXbeYZlOkLFaSn4W,f,t,2023-01-01 00:00:00,t

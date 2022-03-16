@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-12-18--0004-genres
+      author: alchinYY
+      preConditions:
+        - tableExists:
+            tableName: genres
+      loadUpdateData:
+        - tableName: genres
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: /data/2021-12-18--0001-genres.csv
