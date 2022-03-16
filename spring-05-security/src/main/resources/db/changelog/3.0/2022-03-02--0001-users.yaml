@@ -25,8 +25,8 @@ databaseChangeLog:
               constraints:
                 nullable: false
           - column:
-              name: expired
-              type: BOOLEAN
+              name: expiration_date
+              type: TIMESTAMP WITHOUT TIME ZONE
           - column:
               name: locked
               type: BOOLEAN

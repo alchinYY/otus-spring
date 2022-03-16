@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -27,7 +28,8 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    private Boolean expired;
+    @Column(name = "expiration_date")
+    private LocalDate expirationDate;
 
     private Boolean locked;
 
@@ -49,7 +51,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return !expired;
+        return !expirationDate.isBefore(LocalDate.now());
     }
 
     @Override
