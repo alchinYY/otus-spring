@@ -1,0 +1,97 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-03-16--0001-create-acl_object_identity
+      author: alchinYY
+      createTable:
+        tableName: acl_object_identity
+        columns:
+          - column:
+              name: id
+              type: BIGINT
+              autoIncrement: true
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_acl_object_identity
+          - column:
+              name: object_id_class
+              type: BIGINT
+              constraints:
+                nullable: false
+          - column:
+              name: object_id_identity
+              type: BIGINT
+              constraints:
+                nullable: false
+          - column:
+              name: parent_object
+              type: BIGINT
+              defaultValue: null
+          - column:
+              name: owner_sid
+              type: BIGINT
+              defaultValue: null
+          - column:
+              name: entries_inheriting
+              type: TINYINT
+              constraints:
+                nullable: false
+      changes:
+        - addUniqueConstraint:
+            columnNames: object_id_class,object_id_identity
+            constraintName: UK_acl_object_identity
+            tableName: acl_object_identity
+  - changeSet:
+      id: 2022-03-16--0002-add_relation-acl_entry-acl_object_identity
+      author: alchinYY
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: acl_object_identity
+            baseTableName: acl_entry
+            constraintName: acl_entry_acl_object_identity_fk
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: acl_object_identity
+            validate: true
+  - changeSet:
+      id: 2022-03-16--0003-add_relation-acl_object_identity-acl_object_identity
+      author: alchinYY
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: parent_object
+            baseTableName: acl_object_identity
+            constraintName: acl_object_identity_parent_object_fk
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: acl_object_identity
+            validate: true
+  - changeSet:
+      id: 2022-03-16--0004-add_relation-acl_object_identity-acl_class
+      author: alchinYY
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: object_id_class
+            baseTableName: acl_object_identity
+            constraintName: acl_object_identity_acl_class_fk
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: acl_class
+            validate: true
+  - changeSet:
+      id: 2022-03-16--0005-add_relation-acl_object_identity-acl_sid
+      author: alchinYY
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: owner_sid
+            baseTableName: acl_object_identity
+            constraintName: acl_object_identity_acl_sid_fk
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: acl_sid
+            validate: true
+
+

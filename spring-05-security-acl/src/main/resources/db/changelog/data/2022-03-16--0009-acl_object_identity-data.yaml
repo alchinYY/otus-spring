@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-03-16--0009-acl_object_identity
+      author: alchinYY
+      preConditions:
+        - tableExists:
+            tableName: acl_object_identity
+      loadUpdateData:
+        - tableName: acl_object_identity
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: /data/2022-03-16--0009-acl_object_identity.csv

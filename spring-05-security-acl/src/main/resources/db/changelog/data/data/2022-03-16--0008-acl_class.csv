@@ -1,0 +1,4 @@
+id,class
+1,ru.otus.spring.library.domain.Book
+2,ru.otus.spring.library.domain.Genre
+3,ru.otus.spring.library.domain.Author

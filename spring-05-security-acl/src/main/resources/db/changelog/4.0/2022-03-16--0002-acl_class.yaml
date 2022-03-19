@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-03-16--create-acl_class
+      author: alchinYY
+      createTable:
+        tableName: acl_class
+        columns:
+          - column:
+              name: id
+              type: BIGINT
+              autoIncrement: true
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_acl_class
+          - column:
+              name: class
+              type: VARCHAR(255)
+              constraints:
+                unique: true
+                nullable: false

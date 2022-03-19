@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-03-18--0001-create-users_roles
+      author: alchinYY
+      createTable:
+        tableName: users_roles
+        columns:
+          - column:
+              name: id
+              type: BIGINT
+              autoIncrement: true
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_users_roles
+          - column:
+              name: authority
+              type: VARCHAR(250)
+              constraints:
+                nullable: false
+          - column:
+              name: user_id
+              type: BIGINT
+              constraints:
+                nullable: false
+  - changeSet:
+      id: 2022-03-18--0002-add_relation-users_roles-users
+      author: alchinYY
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: users_roles
+            constraintName: users_roles_users_fk
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: users
+            validate: true

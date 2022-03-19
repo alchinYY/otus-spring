@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-12-18--create-authors_books
+      author: alchinYY
+      createTable:
+        tableName: authors_books
+        columns:
+          - column:
+              name: book_id
+              type: BIGINT
+              autoIncrement: true
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: authors_books_pk
+          - column:
+              name: author_id
+              type: BIGINT
+              autoIncrement: true
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: authors_books_pk
+  - changeSet:
+      id: 2021-12-18--create-books_authors_books_fk
+      author: alchinYY
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: book_id
+            baseTableName: authors_books
+            constraintName: books_authors_fk
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: books
+            validate: true
+  - changeSet:
+      id: 2021-12-18--create-books_authors_authors_fk
+      author: alchinYY
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: authors_books
+            constraintName: authors_books_fk
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: authors
+            validate: true
