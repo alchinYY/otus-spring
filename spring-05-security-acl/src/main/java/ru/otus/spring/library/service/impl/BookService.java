@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.exception.DomainNotFound;
+import ru.otus.spring.library.service.CustomAclService;
 import ru.otus.spring.library.service.EntityService;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class BookService implements EntityService<Book> {
     @Override
     @Transactional
     public void deleteById(Long id){
-        bookRepository.delete(getById(id));
+        bookRepository.deleteById(id);
     }
 
 }

@@ -4,20 +4,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import ru.otus.spring.library.domain.Book;
 import ru.otus.spring.library.domain.Comment;
 import ru.otus.spring.library.repo.CommentRepo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(properties = "spring.liquibase.enabled=false")
-@EnableAspectJAutoProxy
 @Import({CommentService.class})
 class CommentServiceTest {
 

@@ -11,7 +11,7 @@ import java.util.List;
 public interface GenreJdbcDao extends JpaRepository<Genre, Long> {
 
     @Override
-    @PostFilter("hasPermission(filterObject, 'READ')")
+    @PostFilter("hasPermission(filterObject, 'READ') or hasAnyRole('EDITOR')")
     List<Genre> findAll();
 
 }

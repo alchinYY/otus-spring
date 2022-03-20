@@ -31,7 +31,7 @@ class BookServiceTest {
     private static final Long EXPECTED_AUTHOR_ID = 1L;
 
     @MockBean
-    private CustomAclService customAclService;
+    private CustomAclServiceImpl customAclService;
 
     @MockBean
     private BookRepo bookRepository;
@@ -93,10 +93,9 @@ class BookServiceTest {
 
     @Test
     void deleteById() {
-        doNothing().when(bookRepository).delete(any());
-        when(bookRepository.findById(BOOK_CORRECT_ID)).thenReturn(Optional.of(mock(Book.class)));
+        doNothing().when(bookRepository).deleteById(any());
         bookService.deleteById(BOOK_CORRECT_ID);
-        verify(bookRepository, times(1)).delete(any());
+        verify(bookRepository, times(1)).deleteById(any());
     }
 
 

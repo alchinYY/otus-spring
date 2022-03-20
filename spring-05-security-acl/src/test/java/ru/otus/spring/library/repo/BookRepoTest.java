@@ -1,4 +1,4 @@
-package ru.otus.spring.library.repo.impl;
+package ru.otus.spring.library.repo;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package ru.otus.spring.library.repo.impl;
+package ru.otus.spring.library.repo;
 
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.DisplayName;

@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface AuthorRepo extends JpaRepository<Author, Long> {
     @Override
-    @PostFilter("hasPermission(filterObject, 'READ')")
+    @PostFilter("hasPermission(filterObject, 'READ') or hasAnyRole('EDITOR')")
     List<Author> findAll();
 }

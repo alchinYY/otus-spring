@@ -14,7 +14,7 @@ public interface BookRepo extends JpaRepository<Book, Long> {
 
     @Override
     @EntityGraph(value = "book-entity-graph", type = EntityGraph.EntityGraphType.LOAD)
-    @PostFilter("hasPermission(filterObject, 'READ')")
+    @PostFilter("hasPermission(filterObject, 'READ') or hasAnyRole('EDITOR')")
     List<Book> findAll();
 
     @Override
@@ -22,7 +22,10 @@ public interface BookRepo extends JpaRepository<Book, Long> {
     <S extends Book> S save(S entity);
 
     @Override
-    @PreAuthorize(value = "hasPermission(#entity, 'WRITE')")
+    @PreAuthorize("hasPermission(#entity, 'WRITE')")
     void delete(Book entity);
 
+    @Override
+    @PreAuthorize("hasPermission(#id, 'ru.otus.spring.library.domain.Book', 'WRITE')")
+    void deleteById(Long id);
 }

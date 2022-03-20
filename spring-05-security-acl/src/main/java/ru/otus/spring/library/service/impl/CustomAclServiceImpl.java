@@ -6,15 +6,17 @@ import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.acls.model.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.library.service.CustomAclService;
 
 import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Service
-public class CustomAclService {
+public class CustomAclServiceImpl implements CustomAclService {
 
     private final MutableAclService aclService;
 
+    @Override
     public void createAcl(Long id, Class<?> aClass, Permission... permissions) {
         ObjectIdentity oid = new ObjectIdentityImpl(aClass, id);
         MutableAcl acl = aclService.createAcl(oid);
@@ -25,6 +27,10 @@ public class CustomAclService {
 
     public Sid getOwner() {
         return new PrincipalSid(SecurityContextHolder.getContext().getAuthentication());
+    }
+
+    public Sid getOwnerByDomain(Class<?> aClass, Long id) {
+        return aclService.readAclById(new ObjectIdentityImpl(aClass, id)).getOwner();
     }
 
 }
