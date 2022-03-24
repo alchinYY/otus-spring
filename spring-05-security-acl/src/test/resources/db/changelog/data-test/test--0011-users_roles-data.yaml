@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-03-18--0011-users_roles
+      author: alchinYY
+      preConditions:
+        - tableExists:
+            tableName: users_roles
+      loadUpdateData:
+        - tableName: users_roles
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: /data/test--0011-users_roles.csv

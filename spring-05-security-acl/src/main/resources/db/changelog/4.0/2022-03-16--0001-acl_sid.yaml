@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-03-16--create-acl_sid
+      author: alchinYY
+      createTable:
+        tableName: acl_sid
+        columns:
+          - column:
+              name: id
+              type: BIGINT
+              autoIncrement: true
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_acl_sid
+          - column:
+              name: principal
+              type: TINYINT
+              constraints:
+                nullable: false
+          - column:
+              name: sid
+              type: VARCHAR(100)
+              constraints:
+                nullable: false
+      changes:
+        - addUniqueConstraint:
+            columnNames: sid, principal
+            constraintName: UK_acl_sid
+            tableName: acl_sid

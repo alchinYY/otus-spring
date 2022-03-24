@@ -1,0 +1,12 @@
+id,principal,sid
+1,1,user1
+2,1,user2
+3,1,user3
+4,1,user4
+5,1,user5
+6,1,user6
+7,1,user7
+8,1,admin
+9,1,moder
+10,0,ROLE_EDITOR
+11,0,BOOK_CREATOR

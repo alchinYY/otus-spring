@@ -1,0 +1,106 @@
+body {
+    padding: 50px;
+}
+
+label {
+    display: inline-block;
+    width: 100px;
+}
+
+input:read-only {
+    background: lightgray;
+}
+
+.row {
+    margin-top: 10px;
+}
+
+.errors {
+    color: red;
+}
+
+.book-table {
+    width: 100%;
+    margin-bottom: 20px;
+    border: 1px solid #dddddd;
+    border-collapse: collapse;
+}
+.book-table th {
+    font-weight: bold;
+    padding: 5px;
+    background: #efefef;
+    border: 1px solid #dddddd;
+}
+.book-table td {
+    border: 1px solid #dddddd;
+    padding: 5px;
+    text-align: center;
+}
+
+.book-comment-href {
+    background-image: url("../images/comment.png");
+    background-repeat: no-repeat;
+    padding: 2px 2px 2px 30px;
+    width: 25px;
+    height: auto;
+}
+
+.comment-btn {
+    display: inline;
+    vertical-align: middle;
+    horiz-align: center;
+}
+
+.comment-btn img {
+    vertical-align: middle;
+    horiz-align: center;
+    max-height: 25px;
+    max-width: 25px;
+    object-fit: cover;
+}
+
+.remover {
+    background: none;
+    border: none;
+    display: inline;
+    vertical-align: middle;
+    horiz-align: center;
+}
+
+.remover img {
+    vertical-align: middle;
+    horiz-align: center;
+    max-height: 35px;
+    max-width: 35px;
+    object-fit: cover;
+}
+
+.remover {
+    background: none;
+    border: none;
+    display: inline;
+    vertical-align: middle;
+    horiz-align: center;
+}
+
+.remover img {
+    vertical-align: middle;
+    horiz-align: center;
+    max-height: 35px;
+    max-width: 35px;
+    object-fit: cover;
+}
+
+.btn-add-book {
+    display: inline;
+    vertical-align: middle;
+    horiz-align: center;
+}
+
+.btn-add-book img {
+    vertical-align: middle;
+    horiz-align: center;
+    max-height: 35px;
+    max-width: 35px;
+    object-fit: cover;
+}
