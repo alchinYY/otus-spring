@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+  main.allow-circular-references: true
+  batch:
+    job:
+      enabled: false
+
+  liquibase.enabled: true
+  sql:
+    init:
+      mode: always
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: none
+  data:
+    mongodb:
+      database: library_from_sql
+      username: root
+      password: example
+      host: localhost
+      port: 27017
+      authentication-database: admin
