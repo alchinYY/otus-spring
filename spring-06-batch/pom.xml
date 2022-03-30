@@ -20,7 +20,6 @@
 		<log4j2>2.15.1</log4j2>
 		<model-mapper.version>2.4.4</model-mapper.version>
 		<mongock.version>4.3.8</mongock.version>
-		<model-mapper.version>2.4.4</model-mapper.version>
 	</properties>
 
 	<dependencies>
@@ -38,12 +37,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>${model-mapper.version}</version>
 		</dependency>
 
 		<dependency>

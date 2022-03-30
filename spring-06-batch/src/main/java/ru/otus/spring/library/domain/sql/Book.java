@@ -6,19 +6,13 @@ import javax.persistence.*;
 import java.util.Set;
 
 @EqualsAndHashCode(of = {"id", "name"})
-@Data
+@ToString(of = {"id", "name"})
 @Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "books")
-@NamedEntityGraph(
-        name = "book-entity-graph",
-        attributeNodes = {
-                @NamedAttributeNode("authors"),
-                @NamedAttributeNode("genre")
-        }
-)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +26,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 

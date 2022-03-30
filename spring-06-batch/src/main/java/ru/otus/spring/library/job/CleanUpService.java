@@ -1,12 +1,14 @@
 package ru.otus.spring.library.job;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class CleanUpService {
     public void cleanUp() throws Exception {
-        System.out.println("Выполняю завершающие мероприятия...");
+        log.info("Выполняю завершающие мероприятия...");
         Thread.sleep(1000);
-        System.out.println("Завершающие мероприятия закончены");
+        log.info("Завершающие мероприятия закончены");
     }
 }
