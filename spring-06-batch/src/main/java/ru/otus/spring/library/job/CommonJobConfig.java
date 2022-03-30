@@ -18,6 +18,8 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class CommonJobConfig {
 
+    public static final String SQL_TO_MONGO_JOB = "SqlToMngJob";
+
     private final StepBuilderFactory stepBuilderFactory;
     private final CleanUpService cleanUpService;
     private final JobBuilderFactory jobBuilderFactory;

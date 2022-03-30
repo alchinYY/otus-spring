@@ -1,10 +1,15 @@
 spring:
-  datasource:
-    url: jdbc:h2:mem:testdb
-    #initialization-mode: always
-    #data: data.sql
-  main:
-    allow-circular-references: true
+  data:
+    mongodb:
+      database: library_test
+  mongodb:
+    embedded:
+      version: 3.4.0
+
+  datasource.url: jdbc:h2:mem:testdb
+
+  main.allow-circular-references: true
+
   liquibase:
     enabled: true
     change-log: classpath:/db/changelog/db.changelog-master-test.yaml
