@@ -1,0 +1,30 @@
+spring:
+  data:
+    mongodb:
+      database: library_test
+  mongodb:
+    embedded:
+      version: 3.4.0
+
+  datasource.url: jdbc:h2:mem:testdb
+
+  main.allow-circular-references: true
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master-test.yaml
+  sql:
+    init:
+      mode: always
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+    hibernate.ddl-auto: none
+
+  shell:
+    interactive:
+      enabled: false
+

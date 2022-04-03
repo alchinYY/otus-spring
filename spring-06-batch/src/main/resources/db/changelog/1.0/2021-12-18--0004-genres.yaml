@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-12-16--create-genres
+      author: alchinYY
+      createTable:
+        tableName: genres
+        columns:
+          - column:
+              name: id
+              type: BIGINT
+              autoIncrement: true
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_genres
+          - column:
+              - name: name
+                type: VARCHAR(255)
+                constraints:
+                  nullable: false
+                  unique: true
+  - changeSet:
+      id: 2021-12-16--create-books-relation
+      author: alchinYY
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: genre_id
+            baseTableName: books
+            constraintName: genres_books_fk
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedTableName: genres
+            validate: true
