@@ -1,0 +1,22 @@
+spring.output.ansi.enabled: ALWAYS
+
+transform:
+  poller:
+    period: 1000
+    message-per-poll: 1
+  queue:
+    size: 20
+
+caterpillar:
+  min-size: 1
+  max-size: 5
+  transform-time-ms: 1000
+
+butterfly:
+  config-by-size:
+    1: swallowtails
+    2: metalmarks
+    3: skippers
+    4: calyptra
+    5: big
+  transform-time-ms: 1000
