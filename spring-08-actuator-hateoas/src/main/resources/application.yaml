@@ -1,0 +1,44 @@
+spring:
+  messages:
+    encoding: UTF-8
+  datasource:
+    url: jdbc:h2:mem:testdb
+  h2:
+    console:
+      enabled: true
+  liquibase:
+    enabled: true
+  sql:
+    init:
+      mode: always
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: none
+
+
+
+  main:
+    allow-bean-definition-overriding: true
+
+logfile.name: logs/app.log
+
+management:
+  health:
+    diskspace:
+      enabled: true
+    db.enabled: on
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-components: always
+      show-details: always
+    logfile:
+      external-file: ${logfile.name}
+
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - logfile

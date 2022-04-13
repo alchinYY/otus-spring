@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+
+        <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+        <appender name="FILE-ROLLING_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>logs/app.log</file>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log.log</fileNamePattern>
+                <maxFileSize>10MB</maxFileSize>
+                <totalSizeCap>1GB</totalSizeCap>
+                <maxHistory>60</maxHistory>
+            </rollingPolicy>
+
+            <encoder>
+                <pattern>%d %c{1.} [%t] %m%n</pattern>
+            </encoder>
+        </appender>
+        <logger name="ru.otus.spring.books" level="INFO">
+            <appender-ref ref="FILE-ROLLING_ALL"/>
+        </logger>
+        <logger name="org.springframework" level="INFO"/>
+        <root level="ERROR">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+
+
+</configuration>
