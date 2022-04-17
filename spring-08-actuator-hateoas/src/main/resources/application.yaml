@@ -20,7 +20,6 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
-logfile.name: logs/app.log
 
 management:
   health:
@@ -34,7 +33,7 @@ management:
       show-components: always
       show-details: always
     logfile:
-      external-file: ${logfile.name}
+      external-file: ${logging.file.name}
 
   endpoints:
     web:
@@ -42,3 +41,17 @@ management:
         include:
           - health
           - logfile
+logfile:
+  name: ${logging.file.name}
+
+logging:
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      total-size-cap: 1GB
+      max-history: 60
+      file-name-pattern: logs/archived/app.%d{yyyy-MM-dd}.%i.log.log
+  file:
+    name: logs/app.log
+  level:
+    root: info

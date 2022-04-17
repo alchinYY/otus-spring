@@ -6,12 +6,9 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-import java.io.File;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = "logfile.name=src/test/resources/log.log")
+@SpringBootTest(properties = "logfile.name=src/test/resources/test.txt")
 @Import(LogFileSizeIndicator.class)
 class LogFileSizeIndicatorTest {
 
