@@ -1,0 +1,13 @@
+${AnsiColor.BRIGHT_WHITE}(╮°-°)╮┳━━┳
+${AnsiColor.MAGENTA}
+,-----.                   ,--.
+|  |) /_   ,---.   ,---.  |  |,-.   ,---.
+|  .-.  \ | .-. | | .-. | |     /  (  .-'
+|  '--' / ' '-' ' ' '-' ' |  \  \  .-'  `)
+`------'   `---'   `---'  `--'`--' `----'
+
+${AnsiColor.BRIGHT_WHITE}(╯ ° □ °) ╯ (┻━┻)
+${AnsiColor.DEFAULT}
+${AnsiColor.CYAN}${application.title} v. ${AnsiColor.RED}${application.version}
+${AnsiColor.CYAN}Powered by Spring Boot ${spring-boot.version}
+${AnsiColor.DEFAULT}

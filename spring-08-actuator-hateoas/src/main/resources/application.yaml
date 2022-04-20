@@ -1,0 +1,57 @@
+spring:
+  messages:
+    encoding: UTF-8
+  datasource:
+    url: jdbc:h2:mem:testdb
+  h2:
+    console:
+      enabled: true
+  liquibase:
+    enabled: true
+  sql:
+    init:
+      mode: always
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: none
+
+
+
+  main:
+    allow-bean-definition-overriding: true
+
+
+management:
+  health:
+    diskspace:
+      enabled: true
+    db.enabled: on
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-components: always
+      show-details: always
+    logfile:
+      external-file: ${logging.file.name}
+
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - logfile
+logfile:
+  name: ${logging.file.name}
+
+logging:
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      total-size-cap: 1GB
+      max-history: 60
+      file-name-pattern: logs/archived/app.%d{yyyy-MM-dd}.%i.log.log
+  file:
+    name: logs/app.log
+  level:
+    root: info
