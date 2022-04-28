@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-04-13--create-books
+      author: alchinYY
+      createTable:
+        tableName: books
+        columns:
+          - column:
+              name: id
+              type: BIGINT
+              autoIncrement: true
+              constraints:
+                nullable: false
+                primaryKey: true
+                primaryKeyName: pk_books
+          - column:
+              - name: name
+                type: VARCHAR(255)
+                constraints:
+                  nullable: false
+
+

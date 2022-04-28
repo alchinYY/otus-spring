@@ -1,0 +1,22 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3.3'
+
+# Define services
+services:
+  library-server:
+    container_name: library-test-container
+    privileged: true
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    ports:
+      - "8035:8080"
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - library
+
+networks:
+  library:

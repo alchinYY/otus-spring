@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-04-13--0001-books
+      author: alchinYY
+      preConditions:
+        - tableExists:
+            tableName: books
+      loadUpdateData:
+        - tableName: books
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: /data/2022-04-13--0001-books.csv
+
+
+
