@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2021-12-25--0005-comments
+      author: alchinYY
+      preConditions:
+        - tableExists:
+            tableName: comments
+      loadUpdateData:
+        - tableName: comments
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: /data/2021-12-25--0005-comments.csv
