@@ -1,0 +1,28 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+
+
+  application:
+    name: hystrix-dashboard
+server.port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure.include: "*"
+
+turbine:
+  app-config: library
+  combine-host-port: true
+  cluster-name-expression: new String("default")
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "*"
+
+eureka.client:
+  service-url.defaultZone: http://localhost:8001/eureka
+  register-with-eureka: true
+  fetch-registry: true
+

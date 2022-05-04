@@ -1,0 +1,38 @@
+server.port: 8080
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  output.ansi.enabled: always
+  application.name: library
+  messages.encoding: UTF-8
+  datasource:
+    url: jdbc:h2:mem:testdb
+  h2.console.enabled: true
+  liquibase.enabled: true
+  sql:
+    init:
+      mode: always
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: none
+  main:
+    allow-bean-definition-overriding: true
+
+server.error.include-message: always
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8001/eureka/
+
+book.default:
+  name: "Такой книги еще нет, но мы обязательно ее напишем"
+  author: admin
+  genre: рукопись
+  id: 0
