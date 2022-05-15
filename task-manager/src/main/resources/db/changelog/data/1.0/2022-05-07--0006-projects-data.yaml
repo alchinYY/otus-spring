@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-07--0006-projects
+      author: yuriy
+      preConditions:
+        - tableExists:
+            tableName: projects
+      loadUpdateData:
+        - tableName: projects
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: data/projects.csv

@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-07--0001-task_status-data
+      author: yuriy
+      preConditions:
+        - tableExists:
+            tableName: task_status
+      loadUpdateData:
+        - tableName: task_status
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: data/task_status.csv

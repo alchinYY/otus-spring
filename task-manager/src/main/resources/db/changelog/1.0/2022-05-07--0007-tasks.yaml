@@ -1,0 +1,129 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-07--0001-create-tasks
+      author: yuriy
+      comment: create table
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  startWith: 1000
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: tasksPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: key
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: assignee_id
+                  type: BIGINT
+              - column:
+                  name: reporter_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: creator_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: project_id
+                  type: BIGINT
+              - column:
+                  name: date_of_creation
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_modify
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: summary
+                  type: VARCHAR(1000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(5000)
+              - column:
+                  name: task_status_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+            tableName: tasks
+  - changeSet:
+      id: 2022-05-07--0002-add_relation-workflow
+      author: yuriy
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: project_id
+            baseTableName: tasks
+            constraintName: fk_projects_tasks
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: projects
+            validate: true
+  - changeSet:
+      id: 2022-05-07--0003-add_relation-assignee
+      author: yuriy
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: assignee_id
+            baseTableName: tasks
+            constraintName: fk_tasks_assignee
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: users
+            validate: true
+  - changeSet:
+      id: 2022-05-07--0004-add_relation-reporter
+      author: yuriy
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: reporter_id
+            baseTableName: tasks
+            constraintName: fk_tasks_reporter
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: users
+            validate: true
+  - changeSet:
+      id: 2022-05-07--0005-add_relation-creator
+      author: yuriy
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: creator_id
+            baseTableName: tasks
+            constraintName: fk_tasks_creator
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: users
+            validate: true
+  - changeSet:
+      id: 2022-05-07--0006-add_relation-task_status
+      author: yuriy
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: task_status_id
+            baseTableName: tasks
+            constraintName: fk_tasks_task_status
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: task_status
+            validate: true
+
