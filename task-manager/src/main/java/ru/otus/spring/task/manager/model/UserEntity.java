@@ -30,9 +30,19 @@ public class UserEntity implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    public UserEntity(Long id, String login, String email) {
+        this.id = id;
+        this.login = login;
+        this.email = email;
+    }
+
     @OneToMany(targetEntity = UserRoleEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private List<UserRoleEntity> userRoles = new ArrayList<>();
+
+    public UserEntity(String login) {
+        this.login = login;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

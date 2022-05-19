@@ -11,4 +11,9 @@ public class TaskUserDto {
     private Long id;
     private String login;
     private String email;
+
+    public TaskUserDto(String login) {
+        this.login = login;
+    }
+
 }

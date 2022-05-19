@@ -16,7 +16,6 @@ import ru.otus.spring.task.manager.model.enumerates.StatusEntity;
 import ru.otus.spring.task.manager.repo.AttachmentRepo;
 import ru.otus.spring.task.manager.service.AttachFileService;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,10 +38,6 @@ public class AttachFileServiceImpl implements AttachFileService {
 
     private final AttachmentRepo attachmentRepo;
 
-    @PostConstruct
-    public void init() {
-    }
-
     @Override
     public AttachmentEntity uploadFile(String directory, UserEntity userEntity, MultipartFile file) {
         log.info("save file with name {}", file.getName());
@@ -59,10 +54,14 @@ public class AttachFileServiceImpl implements AttachFileService {
 
     @Override
     public AttachmentEntity getById(long id) {
+        return attachmentRepo.findByIdAndStatusIsNotDeleted(id)
+                .orElseThrow(() -> new AttachNotFoundException(id));
+    }
+
+    @Override
+    public AttachmentEntity getByIdSuperMode(long id) {
         return attachmentRepo.findById(id)
-                .orElseThrow(
-                        () -> new AttachNotFoundException(String.format("Attachment with \"%s\" not found", id))
-                );
+                .orElseThrow(() -> new AttachNotFoundException(id));
     }
 
     @Override
@@ -70,9 +69,9 @@ public class AttachFileServiceImpl implements AttachFileService {
     public void delete(long id, UserEntity userEntity) {
         AttachmentEntity attachmentEntity = getById(id);
         if(userEntity.getLogin().equals(attachmentEntity.getOwner().getLogin())) {
-            getById(id).setStatus(StatusEntity.deleted);
+            getById(id).setStatus(StatusEntity.DELETED);
         } else {
-            throw new AccessDeniedException("user \"" + userEntity.getLogin() + "\" not owner");
+            throw new AccessDeniedException("User \"" + userEntity.getLogin() + "\" not owner");
         }
 
     }

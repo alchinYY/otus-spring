@@ -8,6 +8,7 @@ import org.hibernate.annotations.FetchMode;
 import ru.otus.spring.task.manager.model.TaskStatusEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +24,7 @@ public class WorkflowEntity {
     @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER,
             cascade = {CascadeType.ALL})
     @JoinColumn(name = "flow_id", referencedColumnName = "id")
-    private List<TaskStatusNodeEntity> statusNodes;
+    private List<TaskStatusNodeEntity> statusNodes = new ArrayList<>();
 
 
     @ManyToOne

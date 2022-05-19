@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-07--0007-tasks
+      author: yuriy
+      preConditions:
+        - tableExists:
+            tableName: tasks
+      loadUpdateData:
+        - tableName: tasks
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: data/tasks.csv

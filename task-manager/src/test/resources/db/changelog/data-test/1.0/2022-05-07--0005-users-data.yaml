@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-07--0005-users-data
+      author: yuriy
+      preConditions:
+        - tableExists:
+            tableName: users
+      loadUpdateData:
+        - tableName: users
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: data/users.csv

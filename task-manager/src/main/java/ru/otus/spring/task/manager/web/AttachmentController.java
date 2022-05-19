@@ -9,8 +9,10 @@ import ru.otus.spring.task.manager.web.dto.FileResponseEntityBuilder;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/1/attachment")
+@RequestMapping(AttachmentController.URL)
 public class AttachmentController {
+
+    public static final String URL = "/api/1/attachment";
 
     private final AttachFileService attachFileService;
     private final SecurityUtil securityUtil;

@@ -17,8 +17,6 @@ import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 @RequiredArgsConstructor
 public class ModelMappingConfiguration {
 
-
-
     @Bean
     public ModelMapper modelMapper(
             List<PropertyMap<?, ?>> propertyMaps,

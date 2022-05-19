@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface TaskRepo extends JpaRepository<TaskEntity, Long> {
 
     @EntityGraph(value = "tasks-entity-graph", type = EntityGraph.EntityGraphType.LOAD)
-    @Query("SELECT te FROM TaskEntity te LEFT OUTER JOIN te.attachments a ON a.status <> 'deleted' LEFT JOIN te.comments com WHERE te.key = :key order by com.id asc")
+    @Query("SELECT te FROM TaskEntity te LEFT OUTER JOIN te.attachments a ON a.status <> 'DELETED' LEFT JOIN te.comments com WHERE te.key = :key order by com.id asc")
     Optional<TaskEntity> findByKey(String key);
 
     @EntityGraph(value = "tasks-entity-graph", type = EntityGraph.EntityGraphType.LOAD)

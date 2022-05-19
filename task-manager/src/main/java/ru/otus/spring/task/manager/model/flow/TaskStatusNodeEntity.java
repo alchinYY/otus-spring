@@ -31,4 +31,8 @@ public class TaskStatusNodeEntity {
     )
     private Set<TaskStatusEntity> edges = new HashSet<>();
 
+    public TaskStatusNodeEntity(TaskStatusEntity node) {
+        this.node = node;
+    }
+
 }

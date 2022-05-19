@@ -32,7 +32,7 @@ public class AttachmentEntity {
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private StatusEntity status = StatusEntity.active;
+    private StatusEntity status = StatusEntity.ACTIVE;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")

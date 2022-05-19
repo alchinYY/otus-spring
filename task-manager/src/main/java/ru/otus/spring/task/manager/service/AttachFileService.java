@@ -10,5 +10,7 @@ public interface AttachFileService {
 
     AttachmentEntity getById(long id);
 
+    AttachmentEntity getByIdSuperMode(long id);
+
     void delete(long id, UserEntity currentUser);
 }

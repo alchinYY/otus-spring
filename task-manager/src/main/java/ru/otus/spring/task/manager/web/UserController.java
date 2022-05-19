@@ -9,8 +9,10 @@ import ru.otus.spring.task.manager.web.dto.UserDto;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/1/user")
+@RequestMapping(value = UserController.URL)
 public class UserController {
+
+    public static final String URL = "/api/1/user";
 
     private final UserService userService;
     private final ObjectMapperUtils objectMapperUtils;
@@ -21,7 +23,7 @@ public class UserController {
     }
 
 
-    @PostMapping()
+    @PostMapping
     public UserDto create(@RequestBody UserDto userDto) {
         return objectMapperUtils.map(
                 userService.create(objectMapperUtils.map(userDto, UserEntity.class)),

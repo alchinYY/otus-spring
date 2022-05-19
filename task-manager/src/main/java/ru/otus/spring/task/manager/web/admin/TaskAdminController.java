@@ -1,4 +1,4 @@
-package ru.otus.spring.task.manager.web;
+package ru.otus.spring.task.manager.web.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -7,9 +7,11 @@ import ru.otus.spring.task.manager.utility.ObjectMapperUtils;
 import ru.otus.spring.task.manager.web.dto.resp.TaskResponseDto;
 
 @RestController
-@RequestMapping("/api/1/task/admin")
+@RequestMapping(TaskAdminController.URL)
 @RequiredArgsConstructor
 public class TaskAdminController {
+
+    public static final String URL = "/api/1/admin/task";
 
     private final TaskService taskService;
     private final ObjectMapperUtils objectMapperUtils;

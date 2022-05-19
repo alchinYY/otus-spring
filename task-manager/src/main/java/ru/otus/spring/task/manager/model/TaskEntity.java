@@ -1,5 +1,7 @@
 package ru.otus.spring.task.manager.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,6 +17,8 @@ import java.util.*;
 @Data
 @Table(name = "tasks")
 @EntityListeners(AuditingEntityListener.class)
+@Builder
+@AllArgsConstructor
 @NamedEntityGraph(
         name = "tasks-entity-graph",
         attributeNodes = {

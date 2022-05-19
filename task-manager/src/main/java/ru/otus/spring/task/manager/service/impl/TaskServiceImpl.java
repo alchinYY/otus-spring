@@ -91,7 +91,6 @@ public class TaskServiceImpl implements TaskService {
         TaskEntity taskEntity = getTaskByKeySuperMode(taskKey);
         TaskStatusEntity currentStatus = taskEntity.getTaskStatus();
         ProjectEntity projectEntity = projectService.getByKey(getProjectKey(taskEntity));
-
         TaskStatusEntity statusEntity = taskStatusNodeRepo.getByNodeTaskStatusIdAndProjectId(currentStatus.getId(), projectEntity.getId())
                 .orElseThrow(() -> new StatusNotAvailableForTransitionException("Task status does not contain transitions"))
                 .getEdges().stream()
