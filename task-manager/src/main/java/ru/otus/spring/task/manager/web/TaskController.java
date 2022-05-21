@@ -1,6 +1,7 @@
 package ru.otus.spring.task.manager.web;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -57,7 +58,10 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = MSG_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("{key}")
-    public TaskResponseDto getTaskByKey(@PathVariable String key) {
+    public TaskResponseDto getTaskByKey(
+            @Parameter(description = "Ключ задачи. <Ключ проекта>-<номер задачи>", example = "KEY-1")
+            @PathVariable String key
+    ) {
         return objectMapperUtils.map(taskService.getTaskByKey(key), TaskResponseDto.class);
     }
 
@@ -70,7 +74,11 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = MSG_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(hidden = true)))
     })
     @PostMapping(value = "{key}/attachment", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public TaskResponseDto addTaskAttach(@PathVariable String key, @RequestPart MultipartFile file) {
+    public TaskResponseDto addTaskAttach(
+            @Parameter(description = "Ключ задачи. <Ключ проекта>-<номер задачи>", example = "KEY-1")
+            @PathVariable String key,
+            @Parameter(description = "Файл со вложением") @RequestPart MultipartFile file
+    ) {
         return objectMapperUtils.map(taskService.addAttach(key, securityUtil.getCurrentUser(), file), TaskResponseDto.class);
     }
 
@@ -83,7 +91,12 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = MSG_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(hidden = true)))
     })
     @PostMapping(value = "{key}/status/id/{statusId}")
-    public TaskResponseDto setTaskStatus(@PathVariable String key, @PathVariable Long statusId) {
+    public TaskResponseDto setTaskStatus(
+            @Parameter(description = "Ключ задачи. <Ключ проекта>-<номер задачи>", example = "KEY-1")
+            @PathVariable String key,
+            @Parameter(description = "id статуса, который нужно установить", example = "2")
+            @PathVariable Long statusId
+    ) {
         return objectMapperUtils.map(taskService.setStatus(key, statusId), TaskResponseDto.class);
     }
 
@@ -96,7 +109,12 @@ public class TaskController {
             @ApiResponse(responseCode = "500", description = MSG_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(hidden = true)))
     })
     @PostMapping(value = "{key}/status/name/{statusName}")
-    public TaskResponseDto setTaskStatus(@PathVariable String key, @PathVariable String statusName) {
+    public TaskResponseDto setTaskStatus(
+            @Parameter(description = "Ключ задачи. <Ключ проекта>-<номер задачи>", example = "KEY-1")
+            @PathVariable String key,
+            @Parameter(description = "Имя статуса", example = "todo")
+            @PathVariable String statusName
+    ) {
         return objectMapperUtils.map(taskService.setStatus(key, statusName), TaskResponseDto.class);
     }
 }

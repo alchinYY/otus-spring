@@ -13,6 +13,7 @@ import ru.otus.spring.task.manager.model.TaskEntity;
 import ru.otus.spring.task.manager.model.UserEntity;
 import ru.otus.spring.task.manager.service.CommentService;
 import ru.otus.spring.task.manager.utility.ObjectMapperUtils;
+import ru.otus.spring.task.manager.web.dto.CreatingTaskCommentDto;
 import ru.otus.spring.task.manager.web.dto.resp.TaskCommentDto;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,16 +42,19 @@ class CommentControllerTest {
 
     @Test
     void createComment() throws Exception {
-        TaskCommentDto taskCommentDto = new TaskCommentDto();
+        CreatingTaskCommentDto creatingTaskCommentDto = new CreatingTaskCommentDto();
+        creatingTaskCommentDto.setTaskKey("KEY-1");
+        creatingTaskCommentDto.setBody("my body");
+
         given(securityUtil.getCurrentUser()).willReturn(new UserEntity());
         given(objectMapperUtils.map(any(), eq(TaskCommentEntity.class))).willReturn(new TaskCommentEntity());
         willDoNothing().given(commentService).createComment(anyString(), any());
 
         mvc.perform(post(CommentController.URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(taskCommentDto))
+                .content(objectMapper.writeValueAsString(creatingTaskCommentDto))
         )
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
     }
 }
