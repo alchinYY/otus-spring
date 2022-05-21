@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.task.manager.exception.UserNotFoundException;
 import ru.otus.spring.task.manager.model.UserEntity;
 import ru.otus.spring.task.manager.repo.UserRepo;
@@ -19,6 +21,7 @@ public class UserService implements UserDetailsService, UserEntityService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.findByLogin(username).orElseThrow(() -> new UserNotFoundException(username));
     }

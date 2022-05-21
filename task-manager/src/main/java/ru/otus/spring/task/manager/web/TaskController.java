@@ -131,6 +131,7 @@ public class TaskController {
     })
     @GetMapping("filter/on-me")
     public List<TaskMinimizedDto> getTaskOnMe() {
+        System.out.println(securityUtil.getCurrentUser());
         return objectMapperUtils.mapAll(taskService.getTasksByAssignee(securityUtil.getCurrentUser()), TaskMinimizedDto.class);
     }
 

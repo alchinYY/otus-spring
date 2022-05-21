@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -36,7 +35,7 @@ public class UserEntity implements UserDetails {
         this.email = email;
     }
 
-    @OneToMany(targetEntity = UserRoleEntity.class, fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = UserRoleEntity.class)
     @JoinColumn(name = "user_id")
     private List<UserRoleEntity> userRoles = new ArrayList<>();
 
