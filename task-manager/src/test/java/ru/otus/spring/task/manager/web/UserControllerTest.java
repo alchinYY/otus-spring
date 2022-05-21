@@ -27,7 +27,7 @@ class UserControllerTest {
 
     private final static Long USER_ID = 1L;
     private final static String USER_LOGIN = "login";
-    private final static String USER_PASSWORD = "1234";
+    private final static String USER_PASSWORD = "12345678";
     private final static String USER_EMAIL = "login@mail.com";
 
     @MockBean
@@ -71,7 +71,7 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userDto))
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().json(objectMapper.writeValueAsString(userDto)));
 
         verify(userService, times(1)).create(any());

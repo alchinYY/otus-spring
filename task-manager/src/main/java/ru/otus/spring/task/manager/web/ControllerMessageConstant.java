@@ -6,6 +6,7 @@ import lombok.experimental.UtilityClass;
 public class ControllerMessageConstant {
 
     public static final String MSG_OK = "OK";
+    public static final String MSG_CREATED = "Created";
     public static final String MSG_UNAUTHORIZED = "Unauthorized";
     public static final String MSG_BAD_REQUEST = "Bad Request";
     public static final String MSG_FORBIDDEN = "Forbidden";
