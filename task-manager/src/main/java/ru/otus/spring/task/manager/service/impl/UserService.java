@@ -22,7 +22,7 @@ public class UserService implements UserDetailsService, UserEntityService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserEntity loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.findByLogin(username).orElseThrow(() -> new UserNotFoundException(username));
     }
 

@@ -31,6 +31,7 @@ public class TaskServiceImpl implements TaskService {
     private final AttachFileService attachFileService;
     private final ProjectService projectService;
     private final TaskStatusNodeRepo taskStatusNodeRepo;
+    private final UserService userService;
 
     @Override
     @Transactional
@@ -129,5 +130,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Set<TaskEntity> getTasksByProject(String projectKey) {
         return projectService.getByKey(projectKey).getTasks();
+    }
+
+    @Override
+    @Transactional
+    public TaskEntity setAssignee(String taskKey, String login) {
+        TaskEntity taskEntity = getTaskByKeySuperMode(taskKey);
+        taskEntity.setAssignee(userService.loadUserByUsername(login));
+        return taskEntity;
     }
 }

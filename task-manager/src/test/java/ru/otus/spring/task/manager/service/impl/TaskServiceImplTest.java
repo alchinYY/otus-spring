@@ -35,6 +35,7 @@ class TaskServiceImplTest {
     private static final TaskStatusEntity IN_PROGRESS_STATUS = new TaskStatusEntity(2L, "in_progress");
     private static final TaskStatusEntity SECRET_STATUS = new TaskStatusEntity(100L, "secret");
     private static final String ASSIGNEE_LOGIN = "login";
+    private static final String ASSIGNEE_NEW_LOGIN = "login1";
 
     @Autowired
     private TaskService taskService;
@@ -47,6 +48,8 @@ class TaskServiceImplTest {
     private ProjectService projectService;
     @MockBean
     private TaskStatusNodeRepo taskStatusNodeRepo;
+    @MockBean
+    private UserService userService;
 
     @Test
     void createTask() {
@@ -248,5 +251,15 @@ class TaskServiceImplTest {
         when(taskRepo.findAllEntityByKey(taskEntity.getKey())).thenReturn(Optional.of(taskEntity));
         when(taskStatusNodeRepo.getByNodeTaskStatusIdAndProjectId(any(), any())).thenReturn(Optional.of(taskStatusNodeEntity));
         when(projectService.getByKey(any())).thenReturn(createProjectEntity());
+    }
+
+    @Test
+    void setAssignee() {
+        TaskEntity taskEntity = createTaskEntity();
+        when(taskRepo.findAllEntityByKey(taskEntity.getKey())).thenReturn(Optional.of(taskEntity));
+        when(userService.loadUserByUsername(ASSIGNEE_NEW_LOGIN)).thenReturn(new UserEntity(ASSIGNEE_NEW_LOGIN));
+
+        taskService.setAssignee(taskEntity.getKey(), ASSIGNEE_NEW_LOGIN);
+        assertThat(taskEntity.getAssignee().getLogin()).isEqualTo(ASSIGNEE_NEW_LOGIN);
     }
 }

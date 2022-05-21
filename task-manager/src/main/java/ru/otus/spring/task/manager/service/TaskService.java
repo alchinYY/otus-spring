@@ -30,4 +30,6 @@ public interface TaskService {
     List<TaskEntity> getTasksByAssignee(UserEntity userEntity);
 
     Set<TaskEntity> getTasksByProject(String projectKey);
+
+    TaskEntity setAssignee(String taskKey, String login);
 }

@@ -103,6 +103,25 @@ public class TaskController {
         return objectMapperUtils.map(taskService.setStatus(key, statusId), TaskResponseDto.class);
     }
 
+    @Operation(summary = "Установка исполнителя по login", responses = {
+            @ApiResponse(responseCode = "200", description = MSG_OK),
+            @ApiResponse(responseCode = "400", description = MSG_BAD_REQUEST, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = MSG_UNAUTHORIZED, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = MSG_FORBIDDEN, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = MSG_NOT_FOUND, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = MSG_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(hidden = true)))
+    })
+
+    @PostMapping(value = "{key}/assignee/{login}")
+    public TaskResponseDto setAssignee(
+            @Parameter(description = "Ключ задачи. <Ключ проекта>-<номер задачи>", example = "KEY-1")
+            @PathVariable String key,
+            @Parameter(description = "login нового assignee", example = "user")
+            @PathVariable String login
+    ) {
+        return objectMapperUtils.map(taskService.setAssignee(key, login), TaskResponseDto.class);
+    }
+
     @Operation(summary = "Установление в задаче статуса по имени статуса", responses = {
             @ApiResponse(responseCode = "200", description = MSG_OK),
             @ApiResponse(responseCode = "400", description = MSG_BAD_REQUEST, content = @Content(schema = @Schema(hidden = true))),
@@ -131,7 +150,6 @@ public class TaskController {
     })
     @GetMapping("filter/on-me")
     public List<TaskMinimizedDto> getTaskOnMe() {
-        System.out.println(securityUtil.getCurrentUser());
         return objectMapperUtils.mapAll(taskService.getTasksByAssignee(securityUtil.getCurrentUser()), TaskMinimizedDto.class);
     }
 
