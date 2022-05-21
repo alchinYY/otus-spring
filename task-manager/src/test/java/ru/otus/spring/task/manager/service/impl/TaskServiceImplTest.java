@@ -34,6 +34,7 @@ class TaskServiceImplTest {
     private static final TaskStatusEntity TODO_STATUS = new TaskStatusEntity(1L, "todo");
     private static final TaskStatusEntity IN_PROGRESS_STATUS = new TaskStatusEntity(2L, "in_progress");
     private static final TaskStatusEntity SECRET_STATUS = new TaskStatusEntity(100L, "secret");
+    private static final String ASSIGNEE_LOGIN = "login";
 
     @Autowired
     private TaskService taskService;
@@ -177,6 +178,19 @@ class TaskServiceImplTest {
                 .isEqualTo(TASK_PROJECT_KEY);
     }
 
+    @Test
+    void getByAssignee() {
+        TaskEntity taskEntity = createTaskEntity();
+
+        when(taskRepo.findByAssignee(any())).thenReturn(List.of(taskEntity));
+
+        assertThat(taskService.getTasksByAssignee(taskEntity.getAssignee()))
+                .isNotEmpty()
+                .containsOnly(taskEntity);
+
+        verify(taskRepo, times(1)).findByAssignee(any());
+    }
+
     private TaskStatusNodeEntity createTaskStatusNode(TaskStatusEntity node, List<TaskStatusEntity> edges) {
         TaskStatusNodeEntity taskStatusNodeEntity = new TaskStatusNodeEntity();
         taskStatusNodeEntity.setNode(node);
@@ -202,7 +216,7 @@ class TaskServiceImplTest {
         taskEntity.setId(1L);
         taskEntity.setKey(TASK_KEY);
         taskEntity.setTaskStatus(TODO_STATUS);
-
+        taskEntity.setAssignee(new UserEntity(ASSIGNEE_LOGIN));
         AttachmentEntity attachmentEntityDeleted = new AttachmentEntity();
         attachmentEntityDeleted.setStatus(StatusEntity.DELETED);
         attachmentEntityDeleted.setId(1L);

@@ -17,6 +17,7 @@ import ru.otus.spring.task.manager.service.AttachFileService;
 import ru.otus.spring.task.manager.service.ProjectService;
 import ru.otus.spring.task.manager.service.TaskService;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 @Service
@@ -117,5 +118,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public String getProjectKey(TaskEntity taskEntity) {
         return taskEntity.getKey().split(TASK_NAME_SEPARATOR)[0];
+    }
+
+    @Override
+    public List<TaskEntity> getTasksByAssignee(UserEntity userEntity) {
+        return taskRepo.findByAssignee(userEntity);
     }
 }

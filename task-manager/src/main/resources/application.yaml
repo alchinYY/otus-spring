@@ -13,7 +13,7 @@ spring:
 
   liquibase:
     enabled: true
-#    drop-first: true
+    drop-first: true
   datasource:
     username: ${DB_USER}
     password: ${DB_USER_PASSWORD}

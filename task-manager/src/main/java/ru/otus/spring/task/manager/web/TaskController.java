@@ -15,9 +15,11 @@ import ru.otus.spring.task.manager.model.TaskEntity;
 import ru.otus.spring.task.manager.service.TaskService;
 import ru.otus.spring.task.manager.utility.ObjectMapperUtils;
 import ru.otus.spring.task.manager.web.dto.CreatingTaskDto;
+import ru.otus.spring.task.manager.web.dto.resp.TaskMinimizedDto;
 import ru.otus.spring.task.manager.web.dto.resp.TaskResponseDto;
 
 import javax.validation.Valid;
+import java.util.List;
 
 import static ru.otus.spring.task.manager.web.ControllerMessageConstant.*;
 
@@ -117,4 +119,18 @@ public class TaskController {
     ) {
         return objectMapperUtils.map(taskService.setStatus(key, statusName), TaskResponseDto.class);
     }
+
+
+    @Operation(summary = "Получение задач, в которые на мне", responses = {
+            @ApiResponse(responseCode = "200", description = MSG_OK),
+            @ApiResponse(responseCode = "400", description = MSG_BAD_REQUEST, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = MSG_UNAUTHORIZED, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = MSG_FORBIDDEN, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = MSG_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(hidden = true)))
+    })
+    @GetMapping("filter/on-me")
+    public List<TaskMinimizedDto> getTaskOnMe() {
+        return objectMapperUtils.mapAll(taskService.getTasksByAssignee(securityUtil.getCurrentUser()), TaskMinimizedDto.class);
+    }
+
 }

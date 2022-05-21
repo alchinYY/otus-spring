@@ -4,6 +4,8 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.otus.spring.task.manager.model.TaskEntity;
 import ru.otus.spring.task.manager.model.UserEntity;
 
+import java.util.List;
+
 public interface TaskService {
 
     TaskEntity createTask(TaskEntity task, String projectKey);
@@ -23,4 +25,6 @@ public interface TaskService {
     TaskEntity setStatusSuperMode(String taskKey, long statusId);
 
     String getProjectKey(TaskEntity taskEntity);
+
+    List<TaskEntity> getTasksByAssignee(UserEntity userEntity);
 }
