@@ -16,6 +16,8 @@ import ru.otus.spring.task.manager.web.dto.UserDto;
 
 import javax.validation.Valid;
 
+import static ru.otus.spring.task.manager.web.ControllerMessageConstant.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = UserController.URL)
@@ -28,12 +30,12 @@ public class UserController {
     private final ObjectMapperUtils objectMapperUtils;
 
     @Operation(summary = "Получить пользователя по id", responses = {
-            @ApiResponse(responseCode = "200", description = ControllerMessageConstant.MSG_OK),
-            @ApiResponse(responseCode = "400", description = ControllerMessageConstant.MSG_BAD_REQUEST, content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "401", description = ControllerMessageConstant.MSG_UNAUTHORIZED, content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = ControllerMessageConstant.MSG_FORBIDDEN, content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "404", description = ControllerMessageConstant.MSG_NOT_FOUND, content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "500", description = ControllerMessageConstant.MSG_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(hidden = true)))
+            @ApiResponse(responseCode = "200", description = MSG_OK),
+            @ApiResponse(responseCode = "400", description = MSG_BAD_REQUEST, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = MSG_UNAUTHORIZED, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = MSG_FORBIDDEN, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "404", description = MSG_NOT_FOUND, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = MSG_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(hidden = true)))
     })
     @GetMapping("{id}")
     public UserDto getById(
@@ -45,11 +47,11 @@ public class UserController {
 
 
     @Operation(summary = "Добавение пользователя", responses = {
-            @ApiResponse(responseCode = "201", description = ControllerMessageConstant.MSG_CREATED),
-            @ApiResponse(responseCode = "400", description = ControllerMessageConstant.MSG_BAD_REQUEST, content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "401", description = ControllerMessageConstant.MSG_UNAUTHORIZED, content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "403", description = ControllerMessageConstant.MSG_FORBIDDEN, content = @Content(schema = @Schema(hidden = true))),
-            @ApiResponse(responseCode = "500", description = ControllerMessageConstant.MSG_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(hidden = true)))
+            @ApiResponse(responseCode = "201", description = MSG_CREATED),
+            @ApiResponse(responseCode = "400", description = MSG_BAD_REQUEST, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = MSG_UNAUTHORIZED, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = MSG_FORBIDDEN, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = MSG_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(hidden = true)))
     })
     @PostMapping
     @ResponseStatus(value = HttpStatus.CREATED)
