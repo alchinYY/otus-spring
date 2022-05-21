@@ -1,10 +1,12 @@
 package ru.otus.spring.task.manager.service.impl;
 
 import org.junit.jupiter.api.Test;
+import org.junit.platform.commons.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.otus.spring.task.manager.exception.UserNotFoundException;
 import ru.otus.spring.task.manager.model.UserEntity;
 import ru.otus.spring.task.manager.repo.UserRepo;
@@ -25,6 +27,8 @@ class UserServiceTest {
 
     @MockBean
     private UserRepo userRepo;
+    @MockBean
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private UserService userService;
@@ -44,6 +48,7 @@ class UserServiceTest {
         UserEntity userEntitySaved = new UserEntity(1L, "login", "email");
 
         when(userRepo.save(any())).thenReturn(userEntitySaved);
+        when(bCryptPasswordEncoder.encode(any())).thenReturn("");
         assertThat(userService.create(userEntity)).isEqualTo(userEntitySaved);
         verify(userRepo, times(1)).save(any());
     }

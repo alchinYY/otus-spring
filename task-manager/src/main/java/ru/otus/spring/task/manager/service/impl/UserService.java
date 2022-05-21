@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.task.manager.exception.UserNotFoundException;
 import ru.otus.spring.task.manager.model.UserEntity;
@@ -15,6 +16,7 @@ import ru.otus.spring.task.manager.service.UserEntityService;
 public class UserService implements UserDetailsService, UserEntityService {
 
     private final UserRepo userRepo;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -23,6 +25,7 @@ public class UserService implements UserDetailsService, UserEntityService {
 
     @Override
     public UserEntity create(UserEntity userEntity) {
+        userEntity.setPassword(bCryptPasswordEncoder.encode(userEntity.getPassword()));
         return userRepo.save(userEntity);
     }
 

@@ -7,12 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-//@OpenAPIDefinition(info = @Info(title = "My API", version = "v1"))
-//@SecurityScheme(
-//        name = "basicAuth",
-//        type = SecuritySchemeType.HTTP,
-//        scheme = "basic"
-//)
+@OpenAPIDefinition(info = @Info(title = "Task manager", version = "v1"))
 public class OpenApi30Config {
 
 }
