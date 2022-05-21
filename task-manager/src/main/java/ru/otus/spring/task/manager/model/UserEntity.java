@@ -14,6 +14,12 @@ import java.util.List;
 @Data
 @Table(name = "users")
 @NoArgsConstructor
+@NamedEntityGraph(
+        name = "users-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("userRoles")
+        }
+)
 public class UserEntity implements UserDetails {
 
     @Id

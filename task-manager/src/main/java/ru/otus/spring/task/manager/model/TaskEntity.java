@@ -23,9 +23,14 @@ import java.util.*;
                 @NamedAttributeNode("reporter"),
                 @NamedAttributeNode("creator"),
                 @NamedAttributeNode("taskStatus"),
-                @NamedAttributeNode("attachments"),
-                @NamedAttributeNode("comments")
+                @NamedAttributeNode(value = "attachments", subgraph = "user-attachment-tasks-entity-graph"),
+                @NamedAttributeNode(value = "comments", subgraph = "user-comments-tasks-entity-graph")
+        },
+        subgraphs = {
+                @NamedSubgraph(name = "user-comments-tasks-entity-graph", attributeNodes = @NamedAttributeNode("author")),
+                @NamedSubgraph(name = "user-attachment-tasks-entity-graph", attributeNodes = @NamedAttributeNode("owner")),
         }
+
 )
 @EqualsAndHashCode(of = "id")
 public class TaskEntity {

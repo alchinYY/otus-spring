@@ -10,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.otus.spring.task.manager.model.UserEntity;
 import ru.otus.spring.task.manager.service.impl.UserService;
 import ru.otus.spring.task.manager.web.SecurityUtil;
@@ -28,15 +27,11 @@ class SecurityUtilTest {
     private String userPass;
     @Autowired
     private SecurityUtil securityUtil;
-    @MockBean
+    @Autowired
     private UserService userService;
 
     @Test
     void getCurrentUser() {
-        UserEntity userEntityForTest = new UserEntity();
-        userEntityForTest.setLogin(userNameForTest);
-        userEntityForTest.setPassword(new BCryptPasswordEncoder().encode(userPass));
-        when(userService.loadUserByUsername(userNameForTest)).thenReturn(userEntityForTest);
 
         SecurityContext securityContext = new SecurityContextImpl();
         securityContext.setAuthentication(
