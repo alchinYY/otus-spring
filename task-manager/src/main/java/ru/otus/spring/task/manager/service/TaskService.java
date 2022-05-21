@@ -5,6 +5,7 @@ import ru.otus.spring.task.manager.model.TaskEntity;
 import ru.otus.spring.task.manager.model.UserEntity;
 
 import java.util.List;
+import java.util.Set;
 
 public interface TaskService {
 
@@ -27,4 +28,6 @@ public interface TaskService {
     String getProjectKey(TaskEntity taskEntity);
 
     List<TaskEntity> getTasksByAssignee(UserEntity userEntity);
+
+    Set<TaskEntity> getTasksByProject(String projectKey);
 }

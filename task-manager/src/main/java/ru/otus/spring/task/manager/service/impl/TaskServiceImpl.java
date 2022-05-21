@@ -18,6 +18,7 @@ import ru.otus.spring.task.manager.service.ProjectService;
 import ru.otus.spring.task.manager.service.TaskService;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 @Service
@@ -123,5 +124,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskEntity> getTasksByAssignee(UserEntity userEntity) {
         return taskRepo.findByAssignee(userEntity);
+    }
+
+    @Override
+    public Set<TaskEntity> getTasksByProject(String projectKey) {
+        return projectService.getByKey(projectKey).getTasks();
     }
 }

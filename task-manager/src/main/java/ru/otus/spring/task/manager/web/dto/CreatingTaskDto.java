@@ -16,7 +16,7 @@ import javax.validation.constraints.Pattern;
 public class CreatingTaskDto {
 
     @NotNull
-    @Pattern(regexp = "[A-Z]+")
+    @Pattern(regexp = "[A-Z0-9]+")
     @Schema(description = "Ключ проекта", example = "KEY")
     private String projectKey;
 

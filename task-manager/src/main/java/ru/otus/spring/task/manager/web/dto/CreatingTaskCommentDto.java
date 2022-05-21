@@ -22,6 +22,6 @@ public class CreatingTaskCommentDto {
     private String body;
 
     @Schema(description = "Ключ задачи", example = "KEY-1")
-    @Pattern(regexp = "[A-Z]+-[0-9]+")
+    @Pattern(regexp = "[A-Z0-9]+-[0-9]+")
     private String taskKey;
 }

@@ -19,6 +19,7 @@ import ru.otus.spring.task.manager.web.dto.resp.TaskMinimizedDto;
 import ru.otus.spring.task.manager.web.dto.resp.TaskResponseDto;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 import static ru.otus.spring.task.manager.web.ControllerMessageConstant.*;
@@ -131,6 +132,23 @@ public class TaskController {
     @GetMapping("filter/on-me")
     public List<TaskMinimizedDto> getTaskOnMe() {
         return objectMapperUtils.mapAll(taskService.getTasksByAssignee(securityUtil.getCurrentUser()), TaskMinimizedDto.class);
+    }
+
+
+    @Operation(summary = "Получение задач по ключу проекта", responses = {
+            @ApiResponse(responseCode = "200", description = MSG_OK),
+            @ApiResponse(responseCode = "400", description = MSG_BAD_REQUEST, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "401", description = MSG_UNAUTHORIZED, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "403", description = MSG_FORBIDDEN, content = @Content(schema = @Schema(hidden = true))),
+            @ApiResponse(responseCode = "500", description = MSG_INTERNAL_SERVER_ERROR, content = @Content(schema = @Schema(hidden = true)))
+    })
+    @GetMapping("filter/project/{key}")
+    public List<TaskMinimizedDto> getTaskOnProject(
+            @Parameter(description = "Ключ проекта", example = "KEY")
+            @Pattern(regexp = "[A-Z0-9]+")
+            @PathVariable String key
+    ) {
+        return objectMapperUtils.mapAll(taskService.getTasksByProject(key), TaskMinimizedDto.class);
     }
 
 }

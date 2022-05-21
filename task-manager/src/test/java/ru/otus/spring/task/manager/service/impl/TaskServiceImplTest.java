@@ -191,6 +191,20 @@ class TaskServiceImplTest {
         verify(taskRepo, times(1)).findByAssignee(any());
     }
 
+    @Test
+    void getTasksByProject() {
+        ProjectEntity projectEntity = createProjectEntity();
+        projectEntity.getTasks().add(createTaskEntity());
+        when(projectService.getByKey(any())).thenReturn(projectEntity);
+
+        assertThat(taskService.getTasksByProject(projectEntity.getKey()))
+                .isNotEmpty()
+                .hasSize(1);
+
+        verify(projectService, times(1)).getByKey(any());
+
+    }
+
     private TaskStatusNodeEntity createTaskStatusNode(TaskStatusEntity node, List<TaskStatusEntity> edges) {
         TaskStatusNodeEntity taskStatusNodeEntity = new TaskStatusNodeEntity();
         taskStatusNodeEntity.setNode(node);
