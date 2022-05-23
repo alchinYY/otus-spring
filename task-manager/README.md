@@ -18,6 +18,7 @@ ___
 
 * Spring Boot
 * Data Jpa
+* Web  
 * Security
 * Actuator
 * Postgresql
