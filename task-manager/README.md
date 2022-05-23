@@ -13,7 +13,16 @@
 
 * У приложения настроена работа с actuator.
 * Приложение полностью готово для деплоя в Docker.
+___
+##Технологи
 
+* Spring Boot
+* Data Jpa
+* Security
+* Actuator
+* Postgresql
+* Docker
+* Springdoc (Как фронт)
 ___
 ##Справочная информация
 * тестовое окружение в docker можно поднять с помощью файла /docker/
