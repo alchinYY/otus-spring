@@ -1,0 +1,34 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-07--0001-create-task_workflow
+      author: yuriy
+      comment: create table
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  startWith: 1000
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: task_workflowPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: start_status_id
+                  type: BIGINT
+            tableName: task_workflow
+  - changeSet:
+      id: 2022-05-07--0002-add_relation-start_node-task_status
+      author: yuriy
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: start_status_id
+            baseTableName: task_workflow
+            constraintName: fk_task_workflow_task_status
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: task_status
+            validate: true

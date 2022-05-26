@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-07--0001-create-users
+      author: yuriy
+      comment: create table
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  startWith: 1000
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: usersPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: login
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: VARCHAR(500)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+            tableName: users

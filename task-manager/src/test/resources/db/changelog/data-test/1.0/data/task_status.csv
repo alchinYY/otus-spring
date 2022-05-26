@@ -1,0 +1,8 @@
+id,name
+1,todo
+2,in_progress
+3,need_info
+4,on_hold
+5,done
+6,rejected
+7,closed

@@ -1,0 +1,38 @@
+# swagger-ui custom path
+springdoc:
+  show-actuator: true
+
+spring:
+  output.ansi.enabled: ALWAYS
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  main:
+    allow-bean-definition-overriding: true
+
+  liquibase:
+    enabled: true
+    drop-first: true
+  datasource:
+    username: ${DB_USER}
+    password: ${DB_USER_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    url: ${JDBC_URL}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+attachment:
+  location: storage
+
+server.error.include-message: always
+
+management:
+  endpoints:
+    web.exposure.include: "*"

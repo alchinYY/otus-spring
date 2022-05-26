@@ -1,0 +1,3 @@
+id,key,assignee_id,reporter_id,creator_id,project_id,date_of_creation,last_modify,description,summary,task_status_id
+1,HR-1,1,2,3,3,2020-04-04,2020-05-05,,Прошу принять на работу,1
+2,HR-2,4,5,6,3,2020-07-04,2020-08-05,,Прошу уволить с работы,2

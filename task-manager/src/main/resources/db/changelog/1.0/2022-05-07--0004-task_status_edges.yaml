@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-07--0001-create-task_status_edges
+      author: yuriy
+      comment: create table
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: node_id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: edge_id
+                  type: BIGINT
+            tableName: task_status_edges
+  - changeSet:
+      id: 2022-05-07--0002-add_relation-task_status_nodes
+      author: yuriy
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: node_id
+            baseTableName: task_status_edges
+            constraintName: fk_task_status_edges_task_status_nodes
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: task_status_nodes
+            validate: true
+  - changeSet:
+      id: 2022-05-07--0003-add_relation-task_status
+      author: yuriy
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: edge_id
+            baseTableName: task_status_edges
+            constraintName: fk_task_status_edges_task_status
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: task_status
+            validate: true

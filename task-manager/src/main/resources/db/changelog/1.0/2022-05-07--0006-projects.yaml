@@ -1,0 +1,51 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-07--0001-create-projects
+      author: yuriy
+      comment: create table
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  startWith: 1000
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: projectsPK
+                  name: id
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: key
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: task_counter
+                  type: BIGINT
+              - column:
+                  name: flow_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+            tableName: projects
+  - changeSet:
+      id: 2022-05-07--0001-add_relation-workflow
+      author: yuriy
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: flow_id
+            baseTableName: projects
+            constraintName: fk_projects_task_workflow
+            deferrable: false
+            initiallyDeferred: false
+            referencedColumnNames: id
+            referencedTableName: task_workflow
+            validate: true

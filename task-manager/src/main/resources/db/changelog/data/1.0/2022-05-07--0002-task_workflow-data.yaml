@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-07--0002-task_workflow-data
+      author: yuriy
+      preConditions:
+        - tableExists:
+            tableName: task_workflow
+      loadUpdateData:
+        - tableName: task_workflow
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: data/task_workflow.csv

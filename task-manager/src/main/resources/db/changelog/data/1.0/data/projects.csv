@@ -1,0 +1,4 @@
+id,name,key,task_counter,flow_id
+1,Поддержка,SPRT,0,1
+2,Devops-команд,DEVOPS,0,1
+3,HR,HR,2,1

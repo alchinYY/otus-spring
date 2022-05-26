@@ -1,0 +1,22 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3.3'
+
+# Define services
+services:
+  task-manager-server:
+    container_name: task-manager-container
+    privileged: true
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    ports:
+      - "8035:8080"
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - backend
+
+networks:
+  backend:

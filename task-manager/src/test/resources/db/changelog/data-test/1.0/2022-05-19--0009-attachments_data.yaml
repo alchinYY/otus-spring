@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-19--0009-attachments
+      author: yuriy
+      preConditions:
+        - tableExists:
+            tableName: attachments
+      loadUpdateData:
+        - tableName: attachments
+          primaryKey: id
+          relativeToChangelogFile: true
+          file: data/attachments.csv

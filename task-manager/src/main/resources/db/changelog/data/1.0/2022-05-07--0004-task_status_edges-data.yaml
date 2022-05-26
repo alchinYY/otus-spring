@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2022-05-07--0005-task_status_edges-data
+      author: yuriy
+      preConditions:
+        - tableExists:
+            tableName: task_status_edges
+      loadUpdateData:
+        - tableName: task_status_edges
+          primaryKey: edge_id,node_id
+          relativeToChangelogFile: true
+          file: data/task_status_edges.csv
